@@ -98,6 +98,26 @@ const routes = [
         name: "pengeluaranKopi",
         component: () => import("pages/UsahaKopi/Pengeluaran.vue"),
       },
+      {
+        path: "/customer-kopi",
+        name: "customer",
+        component: () => import("pages/UsahaKopi/Customers.vue"),
+      },
+      {
+        path: "/produk-kopi",
+        name: "produk",
+        component: () => import("pages/UsahaKopi/Produk.vue"),
+      },
+      {
+        path: "/stok-kopi",
+        name: "stok",
+        component: () => import("pages/UsahaKopi/Stok.vue"),
+      },
+      {
+        path: "/supplier-kopi",
+        name: "supplier",
+        component: () => import("pages/UsahaKopi/Supplier.vue"),
+      },
     ],
   },
 

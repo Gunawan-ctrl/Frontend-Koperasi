@@ -68,7 +68,13 @@
             <template v-slot:body="props">
               <q-tr :props="props">
                 <q-td key="tanggal" :props="props">
-                  {{ props.row.tanggal }}
+                  {{
+                    new Date(props.row.tanggal).toLocaleDateString("id", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
+                  }}
                 </q-td>
                 <q-td key="namaPeminjam" :props="props">
                   {{ props.row.namaPeminjam }}
@@ -322,7 +328,6 @@ export default {
             total: this.total,
           })
           .then((res) => {
-            console.log(res);
             if ((res.data.sukses = true)) {
               this.$successNotif(res.data.pesan, "positive");
             }
@@ -351,7 +356,6 @@ export default {
     },
     getData() {
       this.$axios.get("peminjaman/getAll").then((res) => {
-        console.log(res);
         if (res.data.sukses) {
           this.rows = res.data.data;
         }

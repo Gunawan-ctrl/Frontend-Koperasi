@@ -2,15 +2,15 @@
   <q-card flat bordered>
     <q-item>
       <q-item-section avatar class="">
-        <q-icon color="blue-7" name="fas fa-chart-line" size="34px" />
+        <q-icon color="brown-4" name="fas fa-chart-line" size="34px" />
       </q-item-section>
 
       <q-item-section>
-        <div class="text-weight-bold text-blue-7">Grafik Pertumbuhan Usaha</div>
+        <div class="text-weight-bold text-brown">Grafik Pertumbuhan Usaha</div>
       </q-item-section>
     </q-item>
     <q-card-section>
-      <Bar :data="chartBar" :height="137" />
+      <Bar :data="chartBarKopi" :height="137" />
     </q-card-section>
   </q-card>
 </template>
@@ -42,7 +42,7 @@ export default {
   // },
   data() {
     return {
-      chartBar: {
+      chartBarKopi: {
         labels: [
           "Jan",
           "Feb",

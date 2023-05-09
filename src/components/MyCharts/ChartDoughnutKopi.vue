@@ -2,11 +2,11 @@
   <q-card flat bordered>
     <q-item>
       <q-item-section avatar class="">
-        <q-icon color="blue-7" name="payments" size="34px" />
+        <q-icon color="brown-4" name="payments" size="34px" />
       </q-item-section>
 
       <q-item-section>
-        <div class="text-weight-bold text-blue-7">Pertumbuhan Uang</div>
+        <div class="text-weight-bold text-brown">Pertumbuhan Uang</div>
       </q-item-section>
     </q-item>
     <q-card-section>
@@ -43,19 +43,11 @@ export default {
         datasets: [
           {
             backgroundColor: ["#41B883", "#E46651", "#00D8FF"],
-            // backgroundColor: this.color,
-            // data: this.jumlah,
             data: [40, 20, 80],
           },
         ],
       },
     };
-  },
-  created() {
-    console.log(this.jumlah);
-  },
-  method() {
-    console.log(this.jumlah);
   },
 };
 </script>

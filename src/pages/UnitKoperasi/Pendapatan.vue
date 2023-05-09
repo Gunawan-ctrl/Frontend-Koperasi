@@ -60,7 +60,13 @@
             <template v-slot:body="props">
               <q-tr :props="props">
                 <q-td key="tanggal" :props="props">
-                  {{ props.row.tanggal }}
+                  {{
+                    new Date(props.row.tanggal).toLocaleDateString("id", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
+                  }}
                 </q-td>
                 <q-td key="namaPeminjam" :props="props">
                   {{ props.row.namaPeminjam }}

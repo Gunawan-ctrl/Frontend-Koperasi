@@ -10,36 +10,14 @@
 
       <div class="row q-mt-md">
         <div class="row q-gutter-md col-12">
-          <q-card class="my-card col-lg-3 col-md-4 col-sm-6" flat bordered>
+          <q-card class="col-lg-3 col-md-4 col-sm-6" flat bordered>
             <q-card-section horizontal>
               <q-card-section class="q-pt-xs">
                 <div class="text-h6 q-mt-sm" style="font-size: 14px">
-                  Penjualan belum dibayar
+                  Total Penjualan
                 </div>
                 <div class="text-caption text-grey" style="font-size: 11px">
-                  semua penjualan yang belum dibayarkan.
-                </div>
-                <div class="row items-center">
-                  <q-icon name="payment" />
-                  <div
-                    class="text-h6 q-ml-sm text-blue-13"
-                    style="font-size: 12px"
-                  >
-                    900
-                  </div>
-                </div>
-              </q-card-section>
-            </q-card-section>
-          </q-card>
-
-          <q-card class="my-card col-lg-3 col-md-4 col-sm-6" flat bordered>
-            <q-card-section horizontal>
-              <q-card-section class="q-pt-xs">
-                <div class="text-h6 q-mt-sm" style="font-size: 14px">
-                  Data penjualan
-                </div>
-                <div class="text-caption text-grey" style="font-size: 11px">
-                  berisi semua data penjualan salsafical.
+                  berisi total data penjualan unit usaha kopi.
                 </div>
                 <div class="row items-center">
                   <q-icon name="credit_score" />
@@ -47,7 +25,13 @@
                     class="text-h6 q-ml-sm text-blue-13"
                     style="font-size: 12px"
                   >
-                    9898
+                    <vue3-autocounter
+                      ref="counter"
+                      :startAmount="0"
+                      :endAmount="Number(totalPenjualan)"
+                      :duration="3"
+                      :autoinit="true"
+                    />
                   </div>
                 </div>
               </q-card-section>
@@ -74,11 +58,21 @@
 
                 <q-btn
                   @click="openDialog(false, null)"
+                  flat
                   icon="library_add"
-                  label="tambah Pengeluaran"
                   text-color="blue-7"
-                  outline
                 >
+                  <q-tooltip> Tambah Data </q-tooltip>
+                </q-btn>
+
+                <q-btn
+                  flat
+                  unelevated
+                  icon="document_scanner"
+                  text-color="blue-7"
+                  @click="exportToCSV()"
+                >
+                  <q-tooltip> Export Data </q-tooltip>
                 </q-btn>
 
                 <q-btn
@@ -156,7 +150,7 @@
             <q-item>
               <q-item-section avatar>
                 <q-avatar>
-                  <q-icon name="price_change" size="30px" color="brown" />
+                  <q-icon name="storefront" size="30px" color="brown" />
                 </q-avatar>
               </q-item-section>
 
@@ -236,6 +230,8 @@
 </template>
 
 <script>
+import Vue3autocounter from "vue3-autocounter";
+
 const columns = [
   {
     name: "namaProduk",
@@ -280,7 +276,7 @@ const rows = [];
 export default {
   name: "PenjualanPage",
   components: {
-    // "vue3-autocounter": Vue3autocounter,
+    "vue3-autocounter": Vue3autocounter,
   },
   data() {
     return {
@@ -293,6 +289,7 @@ export default {
       visibles: false,
       editMode: false,
       dialog: false,
+      totalPenjualan: 3000,
       namaProduk: null,
       harga: null,
       jumlah: null,
@@ -375,8 +372,9 @@ export default {
     },
     getData() {
       this.$axios.get("penjualan/getAll").then((res) => {
+        console.log(res);
         if (res.data.sukses) {
-          this.data = res.data.data;
+          this.rows = res.data.data;
         }
       });
     },

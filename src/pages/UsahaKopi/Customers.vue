@@ -4,7 +4,10 @@
       <q-card class="q-pa-md">
         <q-breadcrumbs separator="---" class="text-brown" active-color="black">
           <q-breadcrumbs-el label="Main Menu" icon="widgets" />
-          <q-breadcrumbs-el label="Pengeluaran" icon="shopping_bag" />
+          <q-breadcrumbs-el
+            label="Pengeluaran"
+            icon="sentiment_satisfied_alt"
+          />
         </q-breadcrumbs>
       </q-card>
 
@@ -14,24 +17,18 @@
             <q-card-section horizontal>
               <q-card-section class="q-pt-xs">
                 <div class="text-h6 q-mt-sm" style="font-size: 14px">
-                  Total Pengeluaran
+                  Data Customer
                 </div>
                 <div class="text-caption text-grey" style="font-size: 11px">
-                  berisi total data pengeluaran unit usaha kopi.
+                  semua data customer usaha kopi.
                 </div>
                 <div class="row items-center">
-                  <q-icon name="credit_score" />
+                  <q-icon name="payment" />
                   <div
                     class="text-h6 q-ml-sm text-blue-13"
                     style="font-size: 12px"
                   >
-                    <vue3-autocounter
-                      ref="counter"
-                      :startAmount="0"
-                      :endAmount="Number(totalPengeluaran)"
-                      :duration="3"
-                      :autoinit="true"
-                    />
+                    300
                   </div>
                 </div>
               </q-card-section>
@@ -50,8 +47,8 @@
             >
               <template v-slot:top>
                 <div class="col">
-                  <div class="text-weight-bold">PENGELUARAN</div>
-                  <div>Daftar semua pengeluaran pada saat ini</div>
+                  <div class="text-weight-bold">CUSTOMER</div>
+                  <div>Daftar semua customer pada saat ini</div>
                 </div>
 
                 <q-space />
@@ -99,20 +96,17 @@
               </template>
               <template v-slot:body="props">
                 <q-tr :props="props">
-                  <q-td key="namaBarangJasa" :props="props">
-                    {{ props.row.namaBarangJasa }}
+                  <q-td key="namaCustomer" :props="props">
+                    {{ props.row.namaCustomer }}
                   </q-td>
-                  <q-td key="deskripsi" :props="props">
-                    {{ props.row.deskripsi }}
+                  <q-td key="alamat" :props="props">
+                    {{ props.row.alamat }}
                   </q-td>
-                  <q-td key="jumlah" :props="props">
-                    Rp {{ props.row.jumlah }}
+                  <q-td key="nomorTelepon" :props="props">
+                    {{ props.row.nomorTelepon }}
                   </q-td>
-                  <q-td key="harga" :props="props">
-                    Rp {{ props.row.harga }}
-                  </q-td>
-                  <q-td key="total" :props="props">
-                    Rp {{ props.row.total }}
+                  <q-td key="email" :props="props">
+                    {{ props.row.email }}
                   </q-td>
                   <q-td key="action" :props="props">
                     <div class="justify-center q-gutter-x-xs">
@@ -179,49 +173,32 @@
 
             <q-form @submit="onSubmit()" @reset="onReset()">
               <q-card-section horizontal>
-                <q-card-section class="q-gutter-xs fit">
+                <q-card-section class="q-gutter-md fit">
                   <q-input
                     dense
-                    v-model="namaBarangJasa"
+                    v-model="namaCustomer"
                     outlined
-                    label="Nama Barang / Jasa"
-                    hint="Nama Barang / Jasa"
+                    label="Nama Customer"
                   />
-                  <q-input
-                    dense
-                    v-model="deskripsi"
-                    outlined
-                    label="Deskripsi"
-                    hint="Deskripsi"
-                  />
+                  <q-input dense v-model="alamat" outlined label="Alamat" />
                 </q-card-section>
 
                 <q-separator vertical />
 
-                <q-card-section class="q-gutter-xs fit">
+                <q-card-section class="q-gutter-md fit">
                   <q-input
                     dense
                     type="number"
-                    v-model="jumlah"
+                    v-model="nomorTelepon"
                     outlined
-                    label="Jumlah"
-                    hint="Jumlah Pengeluaran"
+                    label="Nomor Telepon"
                   />
                   <q-input
                     dense
-                    type="number"
-                    v-model="harga"
+                    type="email"
+                    v-model="email"
                     outlined
-                    label="Harga"
-                    hint="Harga"
-                  />
-                  <q-input
-                    dense
-                    type="number"
-                    v-model="total"
-                    outlined
-                    label="Total"
-                    hint="Total Pengeluaran"
+                    label="Email"
                   />
                 </q-card-section>
               </q-card-section>
@@ -241,37 +218,31 @@
 </template>
 
 <script>
-import Vue3autocounter from "vue3-autocounter";
+// import Vue3autocounter from "vue3-autocounter";
 
 const columns = [
   {
-    name: "namaBarangJasa",
-    label: "Nama Barang / Jasa",
-    field: "namaBarangJasa",
+    name: "namaCustomer",
+    label: "Nama Customer",
+    field: "namaCustomer",
     align: "left",
   },
   {
-    name: "deskripsi",
-    label: "Deskripsi",
-    field: "deskripsi",
+    name: "alamat",
+    label: "Alamat",
+    field: "alamat",
     align: "left",
   },
   {
-    name: "harga",
-    label: "Harga",
-    field: "harga",
+    name: "nomorTelepon",
+    label: "Nomor Telepon",
+    field: "nomorTelepon",
     align: "left",
   },
   {
-    name: "jumlah",
-    label: "Jumlah",
-    field: "jumlah",
-    align: "left",
-  },
-  {
-    name: "total",
-    label: "Total",
-    field: "total",
+    name: "email",
+    label: "Email",
+    field: "email",
     align: "left",
   },
   {
@@ -285,9 +256,9 @@ const columns = [
 const data = [];
 
 export default {
-  name: "PengeluaranPage",
+  name: "CustomersPage",
   components: {
-    "vue3-autocounter": Vue3autocounter,
+    // "vue3-autocounter": Vue3autocounter,
   },
   data() {
     return {
@@ -300,12 +271,10 @@ export default {
       visibles: false,
       editMode: false,
       dialog: false,
-      totalPengeluaran: 3000,
-      namaBarangJasa: null,
-      deskripsi: null,
-      harga: null,
-      jumlah: null,
-      total: null,
+      namaCustomer: null,
+      alamat: null,
+      nomorTelepon: null,
+      email: null,
       idActive: null,
     };
   },
@@ -316,19 +285,16 @@ export default {
     openDialog(editMode, data) {
       this.editMode = editMode;
       if (editMode) {
-        this.namaBarangJasa = data.namaBarangJasa;
-        this.deskripsi = data.deskripsi;
-        this.harga = data.harga;
-        this.jumlah = data.jumlah;
-        this.total = data.total;
+        this.namaCustomer = data.namaCustomer;
+        this.alamat = data.alamat;
+        this.nomorTelepon = data.nomorTelepon;
+        this.email = data.email;
         this.idActive = data._id;
       } else {
-        this.namaBarangjasa = null;
-        this.deskripsi = null;
-        this.harga = null;
-        this.jumlah = null;
-        this.total = null;
-        this.idActive = null;
+        this.namaCustomer = null;
+        this.alamat = null;
+        this.nomorTelepon = null;
+        this.email = null;
       }
       this.dialog = true;
     },
@@ -337,23 +303,19 @@ export default {
       this.dialog = false;
     },
     resetForm() {
-      this.tanggal = null;
-      this.namaBarangjasa = null;
-      this.deskripsi = null;
-      this.harga = null;
-      this.jumlah = null;
-      this.total = null;
+      this.namaCustomer = null;
+      this.alamat = null;
+      this.nomorTelepon = null;
+      this.email = null;
     },
     onSubmit() {
       if (this.editMode) {
         this.$axios
-          .put(`pengeluaran/edit/${this.idActive}`, {
-            tanggal: this.tanggal,
-            namaBarangJasa: this.namaBarangJasa,
-            deskripsi: this.deskripsi,
-            harga: this.harga,
-            jumlah: this.jumlah,
-            total: this.total,
+          .put(`customer/edit/${this.idActive}`, {
+            namaCustomer: this.namaCustomer,
+            alamat: this.alamat,
+            nomorTelepon: this.nomorTelepon,
+            email: this.email,
           })
           .then((res) => {
             console.log(res);
@@ -366,13 +328,11 @@ export default {
           });
       } else {
         this.$axios
-          .post("pengeluaran/add", {
-            tanggal: this.tanggal,
-            namaBarangJasa: this.namaBarangJasa,
-            deskripsi: this.deskripsi,
-            harga: this.harga,
-            jumlah: this.jumlah,
-            total: this.total,
+          .post("customer/add", {
+            namaCustomer: this.namaCustomer,
+            alamat: this.alamat,
+            nomorTelepon: this.nomorTelepon,
+            email: this.email,
           })
           .then((res) => {
             if ((res.data.sukses = true)) {
@@ -384,7 +344,7 @@ export default {
       }
     },
     getData() {
-      this.$axios.get("pengeluaran/getAll").then((res) => {
+      this.$axios.get("customer/getAll").then((res) => {
         if (res.data.sukses) {
           this.data = res.data.data;
         }
@@ -399,7 +359,7 @@ export default {
           persistent: true,
         })
         .onOk(() => {
-          this.$axios.delete(`pengeluaran/delete/${_id}`).then((res) => {
+          this.$axios.delete(`customer/delete/${_id}`).then((res) => {
             if (res.data.sukses) {
               this.$successNotif(res.data.pesan, "positive");
             }
@@ -408,12 +368,10 @@ export default {
         });
     },
     onReset() {
-      this.namaBarangJasa = null;
-      this.gambar = null;
-      this.deskripsi = null;
-      this.harga = null;
-      this.jumlah = null;
-      this.total = null;
+      this.namaCustomer = null;
+      this.alamat = null;
+      this.nomorTelepon = null;
+      this.email = null;
     },
   },
 };

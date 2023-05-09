@@ -8,44 +8,16 @@
         </q-breadcrumbs>
       </q-card>
 
-      <div class="row q-mt-lg">
+      <div class="row q-mt-md">
         <div class="row q-gutter-md col-12">
-          <q-card class="my-card col-lg-3 col-md-4 col-sm-7" flat bordered>
+          <q-card class="my-card col-lg-3 col-md-4 col-sm-6" flat bordered>
             <q-card-section horizontal>
               <q-card-section class="q-pt-xs">
                 <div class="text-h6 q-mt-sm" style="font-size: 14px">
-                  Data pembelian belum dibayar
+                  Total Pembelian
                 </div>
                 <div class="text-caption text-grey" style="font-size: 11px">
-                  semua data pembelian belum dibayar.
-                </div>
-                <div class="row items-center">
-                  <q-icon name="payment" />
-                  <div
-                    class="text-h6 q-ml-sm text-blue-13"
-                    style="font-size: 12px"
-                  >
-                    <vue3-autocounter
-                      ref="counter"
-                      :startAmount="0"
-                      :endAmount="Number(totalHutang)"
-                      :duration="3"
-                      :autoinit="true"
-                    />
-                  </div>
-                </div>
-              </q-card-section>
-            </q-card-section>
-          </q-card>
-
-          <q-card class="my-card col-lg-3 col-md-4 col-sm-7" flat bordered>
-            <q-card-section horizontal>
-              <q-card-section class="q-pt-xs">
-                <div class="text-h6 q-mt-sm" style="font-size: 14px">
-                  Data pembelian
-                </div>
-                <div class="text-caption text-grey" style="font-size: 11px">
-                  berisi semua data pembelian salsafical.
+                  berisi total data pembelian unit usaha kopi.
                 </div>
                 <div class="row items-center">
                   <q-icon name="credit_score" />
@@ -56,7 +28,7 @@
                     <vue3-autocounter
                       ref="counter"
                       :startAmount="0"
-                      :endAmount="Number(totalLunas)"
+                      :endAmount="Number(totalPembelian)"
                       :duration="3"
                       :autoinit="true"
                     />
@@ -69,105 +41,106 @@
 
         <div class="row col-12 q-mt-md">
           <q-card class="my-card col" flat bordered>
-            <q-card-section horizontal>
-              <q-card-section class="col-12 q-pa-sm">
-                <q-table
-                  title="Master Data Pembelian"
-                  aria-label="Text"
-                  class="text-h5"
-                  :rows="rows"
+            <q-table
+              :rows="rows"
+              :columns="columns"
+              row-key="name"
+              :filter="filter"
+              :pagination="pagination"
+            >
+              <template v-slot:top>
+                <div class="col">
+                  <div class="text-weight-bold">PEMBELIAN</div>
+                  <div>Daftar semua pembelian pada saat ini</div>
+                </div>
+
+                <q-space />
+
+                <q-btn
+                  @click="openDialog(false, null)"
                   flat
-                  :columns="columns"
-                  row-key="name"
-                  :filter="filter"
+                  icon="library_add"
+                  text-color="blue-7"
                 >
-                  <template v-slot:top>
-                    <div class="col">
-                      <div class="col-2 q-table__title">
-                        Master Data Pembelian
-                      </div>
-                      <p class="text-caption">
-                        Data pembelian yang di lakukan di dalam sistem
-                        salsafical.
-                      </p>
-                    </div>
+                  <q-tooltip> Tambah Data </q-tooltip>
+                </q-btn>
 
-                    <q-space />
+                <q-btn
+                  flat
+                  unelevated
+                  icon="document_scanner"
+                  text-color="blue-7"
+                  @click="exportToCSV()"
+                >
+                  <q-tooltip> Export Data </q-tooltip>
+                </q-btn>
 
-                    <q-btn
-                      flat
-                      round
+                <q-btn
+                  flat
+                  color="primary"
+                  icon="search"
+                  @click="visibles = !visibles"
+                  size="md"
+                  class="q-mr-sm"
+                />
+                <q-slide-transition>
+                  <div v-show="visibles">
+                    <q-input
+                      outlined
+                      debounce="300"
+                      placeholder="Pencarian"
+                      style="width: 200px"
                       color="primary"
-                      icon="search"
-                      @click="visibles = !visibles"
-                      size="md"
-                      class="q-mr-sm"
-                    />
-                    <q-slide-transition>
-                      <div v-show="visibles">
-                        <q-input
-                          outlined
-                          debounce="300"
-                          placeholder="Placeholder"
-                          style="width: 300px"
-                          color="primary"
-                          v-model="filter"
-                          dense
-                        />
-                      </div>
-                    </q-slide-transition>
-                    <q-btn
+                      v-model="filter"
                       dense
-                      icon="add"
-                      class="q-ml-md q-pr-md"
-                      color="blue-13"
-                      label="Tambah Pembelian"
-                      :to="{ name: 'pembelian_add' }"
-                      size="md"
-                      outline
                     />
-                  </template>
+                  </div>
+                </q-slide-transition>
+              </template>
 
-                  <template v-slot:body="props">
-                    <q-tr :props="props">
-                      <q-td key="namaSupplier" :props="props">
-                        {{ props.row.namaSupplier }}
-                      </q-td>
-                      <q-td key="keterangan" :props="props">
-                        {{ props.row.keterangan }}
-                      </q-td>
-                      <q-td key="nomorTelepon" :props="props">
-                        {{ props.row.nomorTelepon }}
-                      </q-td>
-                      <q-td key="statusPembelian" :props="props">
-                        {{ props.row.statusPembelian }}
-                      </q-td>
-                      <q-td key="jumlah" :props="props">
-                        {{ props.row.jumlah }}
-                      </q-td>
-                      <q-td key="harga" :props="props">
-                        {{ props.row.harga }}
-                      </q-td>
-                      <q-td key="total" :props="props">
-                        {{ props.row.total }}
-                      </q-td>
-                      <q-td key="aksi" :props="props">
-                        <q-btn
-                          round
-                          outline
-                          color="red"
-                          @click="this.delete(props.row._id)"
-                          size="sm"
-                          icon="delete"
-                          no-caps
-                          class="q-ml-sm"
-                        />
-                      </q-td>
-                    </q-tr>
-                  </template>
-                </q-table>
-              </q-card-section>
-            </q-card-section>
+              <template v-slot:body="props">
+                <q-tr :props="props">
+                  <q-td key="namaSupplier" :props="props">
+                    {{ props.row.namaSupplier }}
+                  </q-td>
+                  <q-td key="nomorTelepon" :props="props">
+                    {{ props.row.nomorTelepon }}
+                  </q-td>
+                  <q-td key="keterangan" :props="props">
+                    {{ props.row.keterangan }}
+                  </q-td>
+                  <q-td key="jumlah" :props="props">
+                    {{ props.row.jumlah }}
+                  </q-td>
+                  <q-td key="harga" :props="props">
+                    Rp. {{ props.row.harga }}
+                  </q-td>
+                  <q-td key="total" :props="props">
+                    Rp. {{ props.row.total }}
+                  </q-td>
+                  <q-td key="action" :props="props">
+                    <div class="justify-center q-gutter-x-xs">
+                      <q-btn
+                        flat
+                        color="blue-8"
+                        size="md"
+                        class="q-px-xs"
+                        icon="edit"
+                        @click="openDialog(true, props.row)"
+                      ></q-btn>
+                      <q-btn
+                        flat
+                        color="red"
+                        size="md"
+                        @click="hapusData(props.row._id)"
+                        class="q-px-xs"
+                        icon="delete"
+                      ></q-btn>
+                    </div>
+                  </q-td>
+                </q-tr>
+              </template>
+            </q-table>
           </q-card>
         </div>
 
@@ -181,7 +154,7 @@
             <q-item>
               <q-item-section avatar>
                 <q-avatar>
-                  <q-icon name="price_change" size="30px" color="brown" />
+                  <q-icon name="shopping_bag" size="30px" color="brown" />
                 </q-avatar>
               </q-item-section>
 
@@ -217,12 +190,6 @@
                     outlined
                     label="Nama Supplier "
                   />
-                  <q-input dense v-model="keterangan" outlined label="Harga" />
-                </q-card-section>
-
-                <q-separator vertical />
-
-                <q-card-section class="q-gutter-md fit">
                   <q-input
                     dense
                     type="number"
@@ -230,6 +197,17 @@
                     outlined
                     label="Nomor Telpon"
                   />
+                  <q-input
+                    dense
+                    v-model="keterangan"
+                    outlined
+                    label="Keterangan"
+                  />
+                </q-card-section>
+
+                <q-separator vertical />
+
+                <q-card-section class="q-gutter-md fit">
                   <q-input
                     dense
                     type="number"
@@ -272,15 +250,21 @@
 import Vue3autocounter from "vue3-autocounter";
 const columns = [
   {
-    name: "namaProduk",
-    label: "Nama Produk",
-    field: "namaProduk",
+    name: "namaSupplier",
+    label: "Nama Supplier",
+    field: "namaSupplier",
     align: "left",
   },
   {
-    name: "harga",
-    label: "Harga",
-    field: "harga",
+    name: "nomorTelepon",
+    label: "Nomor Telepon",
+    field: "nomorTelepon",
+    align: "left",
+  },
+  {
+    name: "keterangan",
+    label: "Keterangan",
+    field: "keterangan",
     align: "left",
   },
   {
@@ -290,15 +274,15 @@ const columns = [
     align: "left",
   },
   {
-    name: "total",
-    label: "Total",
-    field: "total",
+    name: "harga",
+    label: "Harga",
+    field: "harga",
     align: "left",
   },
   {
-    name: "keterangan",
-    label: "Keterangan",
-    field: "keterangan",
+    name: "total",
+    label: "Total",
+    field: "total",
     align: "left",
   },
   {
@@ -312,7 +296,7 @@ const columns = [
 const rows = [];
 
 export default {
-  name: "PenjualanPage",
+  name: "PembelianPage",
   components: {
     "vue3-autocounter": Vue3autocounter,
   },
@@ -327,13 +311,13 @@ export default {
       visibles: false,
       editMode: false,
       dialog: false,
-      namaProduk: null,
-      harga: null,
-      jumlah: null,
-      total: null,
+      totalPembelian: 4000,
+      namaSupplier: null,
+      nomorTelepon: null,
       keterangan: null,
-      totalHutang: 4000,
-      totalLunas: 2000,
+      jumlah: null,
+      harga: null,
+      total: null,
       idActive: null,
     };
   },
@@ -344,14 +328,16 @@ export default {
     openDialog(editMode, data) {
       this.editMode = editMode;
       if (editMode) {
-        this.namaProduk = data.namaProduk;
-        this.harga = data.harga;
-        this.jumlah = data.jumlah;
-        this.total = data.total;
+        this.namaSupplier = data.namaSupplier;
+        this.nomorTelepon = data.nomorTelepon;
         this.keterangan = data.keterangan;
+        this.jumlah = data.jumlah;
+        this.harga = data.harga;
+        this.total = data.total;
         this.idActive = data._id;
       } else {
-        this.namaProduk = null;
+        this.namaSupplier = null;
+        this.nomorTelepon = null;
         this.harga = null;
         this.jumlah = null;
         this.total = null;
@@ -365,7 +351,8 @@ export default {
       this.dialog = false;
     },
     resetForm() {
-      this.namaProduk = null;
+      this.namaSupplier = null;
+      this.nomorTelepon = null;
       this.harga = null;
       this.jumlah = null;
       this.total = null;
@@ -374,15 +361,15 @@ export default {
     onSubmit() {
       if (this.editMode) {
         this.$axios
-          .put(`penjualan/edit/${this.idActive}`, {
-            namaProduk: this.namaProduk,
+          .put(`pembelian/edit/${this.idActive}`, {
+            namaSupplier: this.namaSupplier,
+            nomorTelepon: this.nomorTelepon,
             harga: this.harga,
             jumlah: this.jumlah,
             total: this.total,
             keterangan: this.keterangan,
           })
           .then((res) => {
-            console.log(res);
             if ((res.data.sukses = true)) {
               this.$successNotif(res.data.pesan, "positive");
             }
@@ -392,8 +379,9 @@ export default {
           });
       } else {
         this.$axios
-          .post("penjualan/add", {
-            namaProduk: this.namaProduk,
+          .post("pembelian/add", {
+            namaSupplier: this.namaSupplier,
+            nomorTelepon: this.nomorTelepon,
             harga: this.harga,
             jumlah: this.jumlah,
             total: this.total,
@@ -410,9 +398,10 @@ export default {
       }
     },
     getData() {
-      this.$axios.get("penjualan/getAll").then((res) => {
+      this.$axios.get("pembelian/getAll").then((res) => {
+        console.log(res);
         if (res.data.sukses) {
-          this.data = res.data.data;
+          this.rows = res.data.data;
         }
       });
     },
@@ -425,7 +414,7 @@ export default {
           persistent: true,
         })
         .onOk(() => {
-          this.$axios.delete(`penjualan/delete/${_id}`).then((res) => {
+          this.$axios.delete(`pembelian/delete/${_id}`).then((res) => {
             if (res.data.sukses) {
               this.$successNotif(res.data.pesan, "positive");
             }
@@ -434,7 +423,8 @@ export default {
         });
     },
     onReset() {
-      this.namaProduk = null;
+      this.namaSupplier = null;
+      this.nomorTelepon = null;
       this.harga = null;
       this.jumlah = null;
       this.total = null;

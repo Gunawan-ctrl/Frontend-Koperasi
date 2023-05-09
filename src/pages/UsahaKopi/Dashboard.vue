@@ -79,10 +79,10 @@
       </div>
       <div class="row items-center q-col-gutter-md q-pt-md">
         <div class="col-md-8">
-          <ChartsBar :data="chartBar" :color="color" />
+          <ChartsBarKopi :data="chartBarKopi" :color="color" />
         </div>
         <div class="col-md-4">
-          <ChartsDoughnut :data="chartDoughnut" />
+          <ChartsDoughnutKopi :data="chartDoughnutKopi" />
         </div>
       </div>
     </div>
@@ -91,8 +91,8 @@
 
 <script>
 // import Vue3autocounter from "vue3-autocounter";
-import ChartsBar from "./../../components/MyCharts/ChartBar.vue";
-import ChartsDoughnut from "./../../components/MyCharts/ChartDoughnut.vue";
+import ChartsBarKopi from "./../../components/MyCharts/ChartBarKopi.vue";
+import ChartsDoughnutKopi from "./../../components/MyCharts/ChartDoughnutKopi.vue";
 import {
   Chart as ChartJS,
   PointElement,
@@ -120,13 +120,13 @@ ChartJS.register(
 export default {
   name: "PageIndex",
   components: {
-    ChartsBar,
-    ChartsDoughnut,
+    ChartsBarKopi,
+    ChartsDoughnutKopi,
   },
   data() {
     return {
-      chartBar: null,
-      chartDoughnut: null,
+      chartBarKopi: null,
+      chartDoughnutKopi: null,
       visibles: false,
       color: [],
       tabs: "produk",

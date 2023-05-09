@@ -4,7 +4,7 @@
       <q-card class="q-pa-md">
         <q-breadcrumbs separator="---" class="text-brown" active-color="black">
           <q-breadcrumbs-el label="Main Menu" icon="widgets" />
-          <q-breadcrumbs-el label="Pengeluaran" icon="shopping_bag" />
+          <q-breadcrumbs-el label="Supplier" icon="shopping_bag" />
         </q-breadcrumbs>
       </q-card>
 
@@ -14,10 +14,10 @@
             <q-card-section horizontal>
               <q-card-section class="q-pt-xs">
                 <div class="text-h6 q-mt-sm" style="font-size: 14px">
-                  Total Pengeluaran
+                  Data Supplier
                 </div>
                 <div class="text-caption text-grey" style="font-size: 11px">
-                  berisi total data pengeluaran unit usaha kopi.
+                  berisi semua data supplier unit usaha kopi.
                 </div>
                 <div class="row items-center">
                   <q-icon name="credit_score" />
@@ -25,13 +25,7 @@
                     class="text-h6 q-ml-sm text-blue-13"
                     style="font-size: 12px"
                   >
-                    <vue3-autocounter
-                      ref="counter"
-                      :startAmount="0"
-                      :endAmount="Number(totalPengeluaran)"
-                      :duration="3"
-                      :autoinit="true"
-                    />
+                    3000
                   </div>
                 </div>
               </q-card-section>
@@ -50,8 +44,8 @@
             >
               <template v-slot:top>
                 <div class="col">
-                  <div class="text-weight-bold">PENGELUARAN</div>
-                  <div>Daftar semua pengeluaran pada saat ini</div>
+                  <div class="text-weight-bold">SUPPLIER</div>
+                  <div>Daftar semua supplier pada saat ini</div>
                 </div>
 
                 <q-space />
@@ -99,20 +93,17 @@
               </template>
               <template v-slot:body="props">
                 <q-tr :props="props">
-                  <q-td key="namaBarangJasa" :props="props">
-                    {{ props.row.namaBarangJasa }}
+                  <q-td key="namaSupplier" :props="props">
+                    {{ props.row.namaSupplier }}
                   </q-td>
-                  <q-td key="deskripsi" :props="props">
-                    {{ props.row.deskripsi }}
+                  <q-td key="keterangan" :props="props">
+                    {{ props.row.keterangan }}
                   </q-td>
-                  <q-td key="jumlah" :props="props">
-                    Rp {{ props.row.jumlah }}
+                  <q-td key="nomorTelepon" :props="props">
+                    {{ props.row.nomorTelepon }}
                   </q-td>
-                  <q-td key="harga" :props="props">
-                    Rp {{ props.row.harga }}
-                  </q-td>
-                  <q-td key="total" :props="props">
-                    Rp {{ props.row.total }}
+                  <q-td key="alamat" :props="props">
+                    {{ props.row.alamat }}
                   </q-td>
                   <q-td key="action" :props="props">
                     <div class="justify-center q-gutter-x-xs">
@@ -156,10 +147,10 @@
 
               <q-item-section>
                 <q-item-label class="text-weight-bold text-uppercase">
-                  Input /Edit Pengeluaran
+                  Input /Edit Supplier
                 </q-item-label>
                 <q-item-label caption>
-                  Input atau edit data pengeluaran
+                  Input atau edit data supplier
                 </q-item-label>
               </q-item-section>
 
@@ -179,50 +170,32 @@
 
             <q-form @submit="onSubmit()" @reset="onReset()">
               <q-card-section horizontal>
-                <q-card-section class="q-gutter-xs fit">
+                <q-card-section class="q-gutter-md fit">
                   <q-input
                     dense
-                    v-model="namaBarangJasa"
+                    v-model="namaSupplier"
                     outlined
-                    label="Nama Barang / Jasa"
-                    hint="Nama Barang / Jasa"
+                    label="Nama Supplier"
                   />
                   <q-input
                     dense
-                    v-model="deskripsi"
+                    v-model="keterangan"
                     outlined
-                    label="Deskripsi"
-                    hint="Deskripsi"
+                    label="Keterangan"
                   />
                 </q-card-section>
 
                 <q-separator vertical />
 
-                <q-card-section class="q-gutter-xs fit">
+                <q-card-section class="q-gutter-md fit">
                   <q-input
                     dense
                     type="number"
-                    v-model="jumlah"
+                    v-model="nomorTelepon"
                     outlined
-                    label="Jumlah"
-                    hint="Jumlah Pengeluaran"
+                    label="nomorTelepon"
                   />
-                  <q-input
-                    dense
-                    type="number"
-                    v-model="harga"
-                    outlined
-                    label="Harga"
-                    hint="Harga"
-                  />
-                  <q-input
-                    dense
-                    type="number"
-                    v-model="total"
-                    outlined
-                    label="Total"
-                    hint="Total Pengeluaran"
-                  />
+                  <q-input dense v-model="alamat" outlined label="alamat" />
                 </q-card-section>
               </q-card-section>
 
@@ -241,37 +214,31 @@
 </template>
 
 <script>
-import Vue3autocounter from "vue3-autocounter";
+// import Vue3autocounter from "vue3-autocounter";
 
 const columns = [
   {
-    name: "namaBarangJasa",
-    label: "Nama Barang / Jasa",
-    field: "namaBarangJasa",
+    name: "namaSupplier",
+    label: "Nama Supplier",
+    field: "namaSupplier",
     align: "left",
   },
   {
-    name: "deskripsi",
-    label: "Deskripsi",
-    field: "deskripsi",
+    name: "keterangan",
+    label: "Keterangan",
+    field: "keterangan",
     align: "left",
   },
   {
-    name: "harga",
-    label: "Harga",
-    field: "harga",
+    name: "nomorTelepon",
+    label: "Nomor Telepon",
+    field: "nomorTelepon",
     align: "left",
   },
   {
-    name: "jumlah",
-    label: "Jumlah",
-    field: "jumlah",
-    align: "left",
-  },
-  {
-    name: "total",
-    label: "Total",
-    field: "total",
+    name: "alamat",
+    label: "Alamat",
+    field: "alamat",
     align: "left",
   },
   {
@@ -287,7 +254,7 @@ const data = [];
 export default {
   name: "PengeluaranPage",
   components: {
-    "vue3-autocounter": Vue3autocounter,
+    // "vue3-autocounter": Vue3autocounter,
   },
   data() {
     return {
@@ -300,12 +267,10 @@ export default {
       visibles: false,
       editMode: false,
       dialog: false,
-      totalPengeluaran: 3000,
-      namaBarangJasa: null,
-      deskripsi: null,
-      harga: null,
-      jumlah: null,
-      total: null,
+      namaSupplier: null,
+      keterangan: null,
+      nomorTelepon: null,
+      alamat: null,
       idActive: null,
     };
   },
@@ -316,18 +281,16 @@ export default {
     openDialog(editMode, data) {
       this.editMode = editMode;
       if (editMode) {
-        this.namaBarangJasa = data.namaBarangJasa;
-        this.deskripsi = data.deskripsi;
-        this.harga = data.harga;
-        this.jumlah = data.jumlah;
-        this.total = data.total;
+        this.namaSupplier = data.namaSupplier;
+        this.keterangan = data.keterangan;
+        this.nomorTelepon = data.nomorTelepon;
+        this.alamat = data.alamat;
         this.idActive = data._id;
       } else {
-        this.namaBarangjasa = null;
-        this.deskripsi = null;
-        this.harga = null;
-        this.jumlah = null;
-        this.total = null;
+        this.namaSupplier = null;
+        this.keterangan = null;
+        this.nomorTelepon = null;
+        this.alamat = null;
         this.idActive = null;
       }
       this.dialog = true;
@@ -337,23 +300,19 @@ export default {
       this.dialog = false;
     },
     resetForm() {
-      this.tanggal = null;
-      this.namaBarangjasa = null;
-      this.deskripsi = null;
-      this.harga = null;
-      this.jumlah = null;
-      this.total = null;
+      this.namaSupplier = null;
+      this.keterangan = null;
+      this.nomorTelepon = null;
+      this.alamat = null;
     },
     onSubmit() {
       if (this.editMode) {
         this.$axios
-          .put(`pengeluaran/edit/${this.idActive}`, {
-            tanggal: this.tanggal,
-            namaBarangJasa: this.namaBarangJasa,
-            deskripsi: this.deskripsi,
-            harga: this.harga,
-            jumlah: this.jumlah,
-            total: this.total,
+          .put(`supplier/edit/${this.idActive}`, {
+            namaSupplier: this.namaSupplier,
+            keterangan: this.keterangan,
+            nomorTelepon: this.nomorTelepon,
+            alamat: this.alamat,
           })
           .then((res) => {
             console.log(res);
@@ -366,13 +325,11 @@ export default {
           });
       } else {
         this.$axios
-          .post("pengeluaran/add", {
-            tanggal: this.tanggal,
-            namaBarangJasa: this.namaBarangJasa,
-            deskripsi: this.deskripsi,
-            harga: this.harga,
-            jumlah: this.jumlah,
-            total: this.total,
+          .post("supplier/add", {
+            namaSupplier: this.namaSupplier,
+            keterangan: this.keterangan,
+            nomorTelepon: this.nomorTelepon,
+            alamat: this.alamat,
           })
           .then((res) => {
             if ((res.data.sukses = true)) {
@@ -384,7 +341,7 @@ export default {
       }
     },
     getData() {
-      this.$axios.get("pengeluaran/getAll").then((res) => {
+      this.$axios.get("supplier/getAll").then((res) => {
         if (res.data.sukses) {
           this.data = res.data.data;
         }
@@ -399,7 +356,7 @@ export default {
           persistent: true,
         })
         .onOk(() => {
-          this.$axios.delete(`pengeluaran/delete/${_id}`).then((res) => {
+          this.$axios.delete(`supplier/delete/${_id}`).then((res) => {
             if (res.data.sukses) {
               this.$successNotif(res.data.pesan, "positive");
             }
@@ -408,15 +365,11 @@ export default {
         });
     },
     onReset() {
-      this.namaBarangJasa = null;
-      this.gambar = null;
-      this.deskripsi = null;
-      this.harga = null;
-      this.jumlah = null;
-      this.total = null;
+      this.namaSupplier = null;
+      this.keterangan = null;
+      this.nomorTelepon = null;
+      this.alamat = null;
     },
   },
 };
 </script>
-
-<style scoped></style>

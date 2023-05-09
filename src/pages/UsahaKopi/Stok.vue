@@ -4,20 +4,21 @@
       <q-card class="q-pa-md">
         <q-breadcrumbs separator="---" class="text-brown" active-color="black">
           <q-breadcrumbs-el label="Main Menu" icon="widgets" />
-          <q-breadcrumbs-el label="Pengeluaran" icon="shopping_bag" />
+          <q-breadcrumbs-el label="Data Barang" icon="extension" />
+          <q-breadcrumbs-el label="Stok" icon="storefront" />
         </q-breadcrumbs>
       </q-card>
 
       <div class="row q-mt-md">
         <div class="row q-gutter-md col-12">
-          <q-card class="my-card col-lg-3 col-md-4 col-sm-7" flat bordered>
+          <q-card class="my-card col-lg-3 col-md-4 col-sm-6" flat bordered>
             <q-card-section horizontal>
               <q-card-section class="q-pt-xs">
                 <div class="text-h6 q-mt-sm" style="font-size: 14px">
-                  Total Pengeluaran
+                  Data Stok
                 </div>
                 <div class="text-caption text-grey" style="font-size: 11px">
-                  berisi total data pengeluaran unit usaha kopi.
+                  berisi semua data stok unit usaha kopi.
                 </div>
                 <div class="row items-center">
                   <q-icon name="credit_score" />
@@ -28,7 +29,7 @@
                     <vue3-autocounter
                       ref="counter"
                       :startAmount="0"
-                      :endAmount="Number(totalPengeluaran)"
+                      :endAmount="Number(dataPenjualan)"
                       :duration="3"
                       :autoinit="true"
                     />
@@ -50,8 +51,8 @@
             >
               <template v-slot:top>
                 <div class="col">
-                  <div class="text-weight-bold">PENGELUARAN</div>
-                  <div>Daftar semua pengeluaran pada saat ini</div>
+                  <div class="text-weight-bold">STOK</div>
+                  <div>Daftar semua stok pada saat ini</div>
                 </div>
 
                 <q-space />
@@ -99,14 +100,14 @@
               </template>
               <template v-slot:body="props">
                 <q-tr :props="props">
-                  <q-td key="namaBarangJasa" :props="props">
-                    {{ props.row.namaBarangJasa }}
+                  <q-td key="namaPersediaan" :props="props">
+                    {{ props.row.namaPersediaan }}
                   </q-td>
-                  <q-td key="deskripsi" :props="props">
-                    {{ props.row.deskripsi }}
+                  <q-td key="kuantitas" :props="props">
+                    {{ props.row.kuantitas }}
                   </q-td>
-                  <q-td key="jumlah" :props="props">
-                    Rp {{ props.row.jumlah }}
+                  <q-td key="satuan" :props="props">
+                    Rp {{ props.row.satuan }}
                   </q-td>
                   <q-td key="harga" :props="props">
                     Rp {{ props.row.harga }}
@@ -156,11 +157,9 @@
 
               <q-item-section>
                 <q-item-label class="text-weight-bold text-uppercase">
-                  Input /Edit Pengeluaran
+                  Input /Edit Stok
                 </q-item-label>
-                <q-item-label caption>
-                  Input atau edit data pengeluaran
-                </q-item-label>
+                <q-item-label caption> Input atau edit data stok </q-item-label>
               </q-item-section>
 
               <q-item-section class="col-1">
@@ -179,33 +178,30 @@
 
             <q-form @submit="onSubmit()" @reset="onReset()">
               <q-card-section horizontal>
-                <q-card-section class="q-gutter-xs fit">
+                <q-card-section class="q-gutter-md fit">
                   <q-input
                     dense
-                    v-model="namaBarangJasa"
+                    v-model="namaPersediaan"
                     outlined
-                    label="Nama Barang / Jasa"
-                    hint="Nama Barang / Jasa"
+                    label="Nama Persediaan "
                   />
                   <q-input
                     dense
-                    v-model="deskripsi"
+                    v-model="kuantitas"
                     outlined
-                    label="Deskripsi"
-                    hint="Deskripsi"
+                    label="Kuantitas"
                   />
                 </q-card-section>
 
                 <q-separator vertical />
 
-                <q-card-section class="q-gutter-xs fit">
+                <q-card-section class="q-gutter-md fit">
                   <q-input
                     dense
                     type="number"
-                    v-model="jumlah"
+                    v-model="satuan"
                     outlined
-                    label="Jumlah"
-                    hint="Jumlah Pengeluaran"
+                    label="Satuan"
                   />
                   <q-input
                     dense
@@ -213,15 +209,13 @@
                     v-model="harga"
                     outlined
                     label="Harga"
-                    hint="Harga"
                   />
                   <q-input
-                    dense
                     type="number"
+                    dense
                     v-model="total"
                     outlined
                     label="Total"
-                    hint="Total Pengeluaran"
                   />
                 </q-card-section>
               </q-card-section>
@@ -245,27 +239,27 @@ import Vue3autocounter from "vue3-autocounter";
 
 const columns = [
   {
-    name: "namaBarangJasa",
-    label: "Nama Barang / Jasa",
-    field: "namaBarangJasa",
+    name: "namaPersediaan",
+    label: "Nama Persediaan",
+    field: "namaPersediaan",
     align: "left",
   },
   {
-    name: "deskripsi",
-    label: "Deskripsi",
-    field: "deskripsi",
+    name: "kuantitas",
+    label: "Kuantitas",
+    field: "kuantitas",
+    align: "left",
+  },
+  {
+    name: "satuan",
+    label: "Satuan",
+    field: "satuan",
     align: "left",
   },
   {
     name: "harga",
     label: "Harga",
     field: "harga",
-    align: "left",
-  },
-  {
-    name: "jumlah",
-    label: "Jumlah",
-    field: "jumlah",
     align: "left",
   },
   {
@@ -285,7 +279,7 @@ const columns = [
 const data = [];
 
 export default {
-  name: "PengeluaranPage",
+  name: "StokPage",
   components: {
     "vue3-autocounter": Vue3autocounter,
   },
@@ -300,11 +294,12 @@ export default {
       visibles: false,
       editMode: false,
       dialog: false,
-      totalPengeluaran: 3000,
-      namaBarangJasa: null,
-      deskripsi: null,
+      penjualanBelumDibayar: 3000,
+      dataPenjualan: 2000,
+      namaPersediaan: null,
+      kuantitas: null,
+      satuan: null,
       harga: null,
-      jumlah: null,
       total: null,
       idActive: null,
     };
@@ -316,17 +311,17 @@ export default {
     openDialog(editMode, data) {
       this.editMode = editMode;
       if (editMode) {
-        this.namaBarangJasa = data.namaBarangJasa;
-        this.deskripsi = data.deskripsi;
+        this.namaPersediaan = data.namaPersediaan;
+        this.kuantitas = data.kuantitas;
+        this.satuan = data.satuan;
         this.harga = data.harga;
-        this.jumlah = data.jumlah;
         this.total = data.total;
         this.idActive = data._id;
       } else {
-        this.namaBarangjasa = null;
-        this.deskripsi = null;
+        this.namaPersediaan = null;
+        this.kuantitas = null;
+        this.satuan = null;
         this.harga = null;
-        this.jumlah = null;
         this.total = null;
         this.idActive = null;
       }
@@ -337,22 +332,20 @@ export default {
       this.dialog = false;
     },
     resetForm() {
-      this.tanggal = null;
-      this.namaBarangjasa = null;
-      this.deskripsi = null;
+      this.namaPersediaan = null;
+      this.kuantitas = null;
+      this.satuan = null;
       this.harga = null;
-      this.jumlah = null;
       this.total = null;
     },
     onSubmit() {
       if (this.editMode) {
         this.$axios
-          .put(`pengeluaran/edit/${this.idActive}`, {
-            tanggal: this.tanggal,
-            namaBarangJasa: this.namaBarangJasa,
-            deskripsi: this.deskripsi,
+          .put(`stok/edit/${this.idActive}`, {
+            namaPersediaan: this.namaPersediaan,
+            kuantitas: this.kuantitas,
+            satuan: this.satuan,
             harga: this.harga,
-            jumlah: this.jumlah,
             total: this.total,
           })
           .then((res) => {
@@ -366,12 +359,11 @@ export default {
           });
       } else {
         this.$axios
-          .post("pengeluaran/add", {
-            tanggal: this.tanggal,
-            namaBarangJasa: this.namaBarangJasa,
-            deskripsi: this.deskripsi,
+          .post("stok/add", {
+            namaPersediaan: this.namaPersediaan,
+            kuantitas: this.kuantitas,
+            satuan: this.satuan,
             harga: this.harga,
-            jumlah: this.jumlah,
             total: this.total,
           })
           .then((res) => {
@@ -384,7 +376,8 @@ export default {
       }
     },
     getData() {
-      this.$axios.get("pengeluaran/getAll").then((res) => {
+      this.$axios.get("stok/getAll").then((res) => {
+        console.log(res);
         if (res.data.sukses) {
           this.data = res.data.data;
         }
@@ -399,7 +392,7 @@ export default {
           persistent: true,
         })
         .onOk(() => {
-          this.$axios.delete(`pengeluaran/delete/${_id}`).then((res) => {
+          this.$axios.delete(`stok/delete/${_id}`).then((res) => {
             if (res.data.sukses) {
               this.$successNotif(res.data.pesan, "positive");
             }
@@ -408,15 +401,13 @@ export default {
         });
     },
     onReset() {
-      this.namaBarangJasa = null;
-      this.gambar = null;
-      this.deskripsi = null;
+      this.namaPersediaan = null;
+      this.kuantitas = null;
+      this.satuan = null;
       this.harga = null;
-      this.jumlah = null;
       this.total = null;
     },
   },
 };
 </script>
-
 <style scoped></style>

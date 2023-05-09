@@ -145,6 +145,18 @@
           >
             <q-item
               clickable
+              :to="{ name: 'produk' }"
+              v-ripple
+              active-class="active"
+            >
+              <q-item-section avatar>
+                <q-icon name="category" />
+              </q-item-section>
+              <q-item-section> Produk </q-item-section>
+            </q-item>
+
+            <q-item
+              clickable
               :to="{ name: 'laporanPenarikan' }"
               v-ripple
               active-class="active"
@@ -154,9 +166,10 @@
               </q-item-section>
               <q-item-section> Inventaris </q-item-section>
             </q-item>
+
             <q-item
               clickable
-              :to="{ name: 'laporanPinjaman' }"
+              :to="{ name: 'stok' }"
               v-ripple
               active-class="active"
             >
@@ -171,18 +184,36 @@
             <q-item-section> EXTRAS </q-item-section>
           </q-item>
 
-          <q-item
-            clickable
-            :to="{ name: 'mitra' }"
-            v-ripple
-            active-class="active"
+          <q-expansion-item
+            expand-separator
+            icon="groups"
+            label="Mitra"
+            :content-inset-level="1"
           >
-            <q-item-section avatar>
-              <q-icon name="payments" />
-            </q-item-section>
+            <q-item
+              clickable
+              :to="{ name: 'supplier' }"
+              v-ripple
+              active-class="active"
+            >
+              <q-item-section avatar>
+                <q-icon name="price_change" />
+              </q-item-section>
+              <q-item-section> Supplier</q-item-section>
+            </q-item>
 
-            <q-item-section> Mitra </q-item-section>
-          </q-item>
+            <q-item
+              clickable
+              :to="{ name: 'customer' }"
+              v-ripple
+              active-class="active"
+            >
+              <q-item-section avatar>
+                <q-icon name="sentiment_satisfied_alt" />
+              </q-item-section>
+              <q-item-section> Customer </q-item-section>
+            </q-item>
+          </q-expansion-item>
 
           <q-item
             clickable
