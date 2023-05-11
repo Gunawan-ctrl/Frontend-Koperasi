@@ -26,11 +26,21 @@
 
               <q-btn
                 @click="openDialog(false, null)"
+                flat
                 icon="library_add"
-                label="tambah Pengeluaran"
                 text-color="blue-7"
-                outline
               >
+                <q-tooltip> Tambah Data </q-tooltip>
+              </q-btn>
+
+              <q-btn
+                flat
+                unelevated
+                icon="document_scanner"
+                text-color="blue-7"
+                @click="exportToCSV()"
+              >
+                <q-tooltip> Export Data </q-tooltip>
               </q-btn>
 
               <q-btn
@@ -126,7 +136,7 @@
         <q-item>
           <q-item-section avatar>
             <q-avatar>
-              <q-icon name="group_add" size="30px" color="blue-7" />
+              <q-icon name="price_change" size="30px" color="blue-7" />
             </q-avatar>
           </q-item-section>
 
@@ -155,41 +165,32 @@
 
         <q-form @submit="onSubmit()" @reset="onReset()">
           <q-card-section horizontal>
-            <q-card-section class="q-gutter-xs fit">
+            <q-card-section class="q-gutter-md fit">
               <q-input
                 dense
                 type="date"
                 v-model="tanggal"
                 outlined
                 label="Tanggal"
-                hint="Tanggal"
               />
               <q-input
                 dense
                 v-model="namaBarangJasa"
                 outlined
                 label="Nama Barang / Jasa"
-                hint="Nama Barang / Jasa"
               />
-              <q-input
-                dense
-                v-model="deskripsi"
-                outlined
-                label="Deskripsi"
-                hint="Deskripsi"
-              />
+              <q-input dense v-model="deskripsi" outlined label="Deskripsi" />
             </q-card-section>
 
             <q-separator vertical />
 
-            <q-card-section class="q-gutter-xs fit">
+            <q-card-section class="q-gutter-md fit">
               <q-input
                 dense
                 type="number"
                 v-model="harga"
                 outlined
                 label="Harga"
-                hint="Harga"
               />
               <q-input
                 dense
@@ -197,7 +198,6 @@
                 v-model="jumlah"
                 outlined
                 label="Jumlah"
-                hint="Jumlah Pengeluaran"
               />
               <q-input
                 dense
@@ -205,7 +205,6 @@
                 v-model="total"
                 outlined
                 label="Total"
-                hint="Total Pengeluaran"
               />
             </q-card-section>
           </q-card-section>
@@ -326,9 +325,9 @@ export default {
       this.editMode = false;
       this.dialog = false;
     },
-    resetForm() {
+    onReset() {
       this.tanggal = null;
-      this.namaBarangjasa = null;
+      this.namaBarangJasa = null;
       this.deskripsi = null;
       this.harga = null;
       this.jumlah = null;
@@ -346,13 +345,12 @@ export default {
             total: this.total,
           })
           .then((res) => {
-            console.log(res);
             if ((res.data.sukses = true)) {
               this.$successNotif(res.data.pesan, "positive");
             }
             this.getData();
             this.resetDialog();
-            this.resetForm();
+            this.onReset();
           });
       } else {
         this.$axios
@@ -396,15 +394,6 @@ export default {
             this.getData();
           });
         });
-    },
-    onReset() {
-      this.tanggal = null;
-      this.namaBarangJasa = null;
-      this.gambar = null;
-      this.deskripsi = null;
-      this.harga = null;
-      this.jumlah = null;
-      this.total = null;
     },
   },
 };

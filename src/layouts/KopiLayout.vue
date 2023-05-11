@@ -157,12 +157,12 @@
 
             <q-item
               clickable
-              :to="{ name: 'laporanPenarikan' }"
+              :to="{ name: 'inventaris' }"
               v-ripple
               active-class="active"
             >
               <q-item-section avatar>
-                <q-icon name="payments" />
+                <q-icon name="beenhere" />
               </q-item-section>
               <q-item-section> Inventaris </q-item-section>
             </q-item>
@@ -174,7 +174,7 @@
               active-class="active"
             >
               <q-item-section avatar>
-                <q-icon name="price_change" />
+                <q-icon name="inventory_2" />
               </q-item-section>
               <q-item-section> Stok</q-item-section>
             </q-item>
@@ -197,7 +197,7 @@
               active-class="active"
             >
               <q-item-section avatar>
-                <q-icon name="price_change" />
+                <q-icon name="local_shipping" />
               </q-item-section>
               <q-item-section> Supplier</q-item-section>
             </q-item>
@@ -209,7 +209,7 @@
               active-class="active"
             >
               <q-item-section avatar>
-                <q-icon name="sentiment_satisfied_alt" />
+                <q-icon name="account_circle" />
               </q-item-section>
               <q-item-section> Customer </q-item-section>
             </q-item>

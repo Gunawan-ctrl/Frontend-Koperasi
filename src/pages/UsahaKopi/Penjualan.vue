@@ -14,10 +14,10 @@
             <q-card-section horizontal>
               <q-card-section class="q-pt-xs">
                 <div class="text-h6 q-mt-sm" style="font-size: 14px">
-                  Total Penjualan
+                  Data Penjualan
                 </div>
                 <div class="text-caption text-grey" style="font-size: 11px">
-                  berisi total data penjualan unit usaha kopi.
+                  berisi semua data penjualan unit usaha kopi.
                 </div>
                 <div class="row items-center">
                   <q-icon name="credit_score" />
@@ -28,7 +28,7 @@
                     <vue3-autocounter
                       ref="counter"
                       :startAmount="0"
-                      :endAmount="Number(totalPenjualan)"
+                      :endAmount="Number(dataPenjualan)"
                       :duration="3"
                       :autoinit="true"
                     />
@@ -289,7 +289,7 @@ export default {
       visibles: false,
       editMode: false,
       dialog: false,
-      totalPenjualan: 3000,
+      dataPenjualan: 3000,
       namaProduk: null,
       harga: null,
       jumlah: null,
@@ -325,7 +325,7 @@ export default {
       this.editMode = false;
       this.dialog = false;
     },
-    resetForm() {
+    onReset() {
       this.namaProduk = null;
       this.harga = null;
       this.jumlah = null;
@@ -343,13 +343,12 @@ export default {
             keterangan: this.keterangan,
           })
           .then((res) => {
-            console.log(res);
             if ((res.data.sukses = true)) {
               this.$successNotif(res.data.pesan, "positive");
             }
             this.getData();
             this.resetDialog();
-            this.resetForm();
+            this.onReset();
           });
       } else {
         this.$axios
@@ -372,7 +371,6 @@ export default {
     },
     getData() {
       this.$axios.get("penjualan/getAll").then((res) => {
-        console.log(res);
         if (res.data.sukses) {
           this.rows = res.data.data;
         }
@@ -395,14 +393,6 @@ export default {
           });
         });
     },
-    onReset() {
-      this.namaProduk = null;
-      this.harga = null;
-      this.jumlah = null;
-      this.total = null;
-      this.keterangan = null;
-    },
   },
 };
 </script>
-<style scoped></style>

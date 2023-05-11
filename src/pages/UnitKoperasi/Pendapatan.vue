@@ -113,17 +113,15 @@
         <q-item>
           <q-item-section avatar>
             <q-avatar>
-              <q-icon name="group_add" size="30px" color="blue-7" />
+              <q-icon name="business_center" size="30px" color="blue-7" />
             </q-avatar>
           </q-item-section>
 
           <q-item-section>
             <q-item-label class="text-weight-bold text-uppercase">
-              Input /Edit Pendapatan
+              Edit Pendapatan
             </q-item-label>
-            <q-item-label caption>
-              Input atau edit data pendapatan
-            </q-item-label>
+            <q-item-label caption> Edit data pendapatan </q-item-label>
           </q-item-section>
 
           <q-item-section class="col-1">
@@ -251,7 +249,7 @@ export default {
       this.editMode = false;
       this.dialog = false;
     },
-    resetForm() {
+    onReset() {
       this.tanggal = null;
       this.namaPeminjam = null;
       this.keterangan = null;
@@ -267,13 +265,12 @@ export default {
             total: this.total,
           })
           .then((res) => {
-            console.log(res);
             if ((res.data.sukses = true)) {
               this.$successNotif(res.data.pesan, "positive");
             }
             this.getData();
             this.resetDialog();
-            this.resetForm();
+            this.onReset();
           });
       } else {
         this.$axios
@@ -317,14 +314,6 @@ export default {
           this.rows = res.data.data;
         }
       });
-    },
-    onReset() {
-      this.kode_transaksi = null;
-      this.nasabah = null;
-      this.debit = null;
-      this.kredit = null;
-      this.saldo = null;
-      this.pengelola = null;
     },
   },
 };

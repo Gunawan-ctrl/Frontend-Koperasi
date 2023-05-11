@@ -3,8 +3,9 @@
     <div class="q-pa-md">
       <q-card class="q-pa-md">
         <q-breadcrumbs separator="---" class="text-brown" active-color="black">
-          <q-breadcrumbs-el label="Main Menu" icon="widgets" />
-          <q-breadcrumbs-el label="Supplier" icon="shopping_bag" />
+          <q-breadcrumbs-el label="Extras" icon="widgets" />
+          <q-breadcrumbs-el label="Mitra" icon="groups" />
+          <q-breadcrumbs-el label="Supplier" icon="local_shipping" />
         </q-breadcrumbs>
       </q-card>
 
@@ -25,7 +26,13 @@
                     class="text-h6 q-ml-sm text-blue-13"
                     style="font-size: 12px"
                   >
-                    3000
+                    <vue3-autocounter
+                      ref="counter"
+                      :startAmount="0"
+                      :endAmount="Number(dataSupplier)"
+                      :duration="3"
+                      :autoinit="true"
+                    />
                   </div>
                 </div>
               </q-card-section>
@@ -141,7 +148,7 @@
             <q-item>
               <q-item-section avatar>
                 <q-avatar>
-                  <q-icon name="price_change" size="30px" color="brown" />
+                  <q-icon name="local_shipping" size="30px" color="brown" />
                 </q-avatar>
               </q-item-section>
 
@@ -193,9 +200,9 @@
                     type="number"
                     v-model="nomorTelepon"
                     outlined
-                    label="nomorTelepon"
+                    label="Nomor Telepon"
                   />
-                  <q-input dense v-model="alamat" outlined label="alamat" />
+                  <q-input dense v-model="alamat" outlined label="Alamat" />
                 </q-card-section>
               </q-card-section>
 
@@ -214,7 +221,7 @@
 </template>
 
 <script>
-// import Vue3autocounter from "vue3-autocounter";
+import Vue3autocounter from "vue3-autocounter";
 
 const columns = [
   {
@@ -252,9 +259,9 @@ const columns = [
 const data = [];
 
 export default {
-  name: "PengeluaranPage",
+  name: "SupplierPage",
   components: {
-    // "vue3-autocounter": Vue3autocounter,
+    "vue3-autocounter": Vue3autocounter,
   },
   data() {
     return {
@@ -267,6 +274,7 @@ export default {
       visibles: false,
       editMode: false,
       dialog: false,
+      dataSupplier: 20,
       namaSupplier: null,
       keterangan: null,
       nomorTelepon: null,

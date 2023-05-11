@@ -14,10 +14,10 @@
             <q-card-section horizontal>
               <q-card-section class="q-pt-xs">
                 <div class="text-h6 q-mt-sm" style="font-size: 14px">
-                  Total Pengeluaran
+                  Data Pengeluaran
                 </div>
                 <div class="text-caption text-grey" style="font-size: 11px">
-                  berisi total data pengeluaran unit usaha kopi.
+                  berisi semua data pengeluaran unit usaha kopi.
                 </div>
                 <div class="row items-center">
                   <q-icon name="credit_score" />
@@ -28,7 +28,7 @@
                     <vue3-autocounter
                       ref="counter"
                       :startAmount="0"
-                      :endAmount="Number(totalPengeluaran)"
+                      :endAmount="Number(dataPengeluaran)"
                       :duration="3"
                       :autoinit="true"
                     />
@@ -300,7 +300,7 @@ export default {
       visibles: false,
       editMode: false,
       dialog: false,
-      totalPengeluaran: 3000,
+      dataPengeluaran: 3000,
       namaBarangJasa: null,
       deskripsi: null,
       harga: null,
@@ -336,9 +336,9 @@ export default {
       this.editMode = false;
       this.dialog = false;
     },
-    resetForm() {
+    onReset() {
       this.tanggal = null;
-      this.namaBarangjasa = null;
+      this.namaBarangJasa = null;
       this.deskripsi = null;
       this.harga = null;
       this.jumlah = null;
@@ -356,13 +356,12 @@ export default {
             total: this.total,
           })
           .then((res) => {
-            console.log(res);
             if ((res.data.sukses = true)) {
               this.$successNotif(res.data.pesan, "positive");
             }
             this.getData();
             this.resetDialog();
-            this.resetForm();
+            this.onReset();
           });
       } else {
         this.$axios
@@ -407,16 +406,6 @@ export default {
           });
         });
     },
-    onReset() {
-      this.namaBarangJasa = null;
-      this.gambar = null;
-      this.deskripsi = null;
-      this.harga = null;
-      this.jumlah = null;
-      this.total = null;
-    },
   },
 };
 </script>
-
-<style scoped></style>

@@ -5,7 +5,7 @@
         <q-breadcrumbs separator="---" class="text-brown" active-color="black">
           <q-breadcrumbs-el label="Main Menu" icon="widgets" />
           <q-breadcrumbs-el label="Data Barang" icon="extension" />
-          <q-breadcrumbs-el label="Stok" icon="storefront" />
+          <q-breadcrumbs-el label="Stok" icon="inventory_2" />
         </q-breadcrumbs>
       </q-card>
 
@@ -29,7 +29,7 @@
                     <vue3-autocounter
                       ref="counter"
                       :startAmount="0"
-                      :endAmount="Number(dataPenjualan)"
+                      :endAmount="Number(dataStok)"
                       :duration="3"
                       :autoinit="true"
                     />
@@ -151,7 +151,7 @@
             <q-item>
               <q-item-section avatar>
                 <q-avatar>
-                  <q-icon name="price_change" size="30px" color="brown" />
+                  <q-icon name="inventory_2" size="30px" color="brown" />
                 </q-avatar>
               </q-item-section>
 
@@ -294,8 +294,7 @@ export default {
       visibles: false,
       editMode: false,
       dialog: false,
-      penjualanBelumDibayar: 3000,
-      dataPenjualan: 2000,
+      dataStok: 2000,
       namaPersediaan: null,
       kuantitas: null,
       satuan: null,

@@ -26,7 +26,13 @@
                     class="text-h6 q-ml-sm text-blue-13"
                     style="font-size: 12px"
                   >
-                    3000
+                    <vue3-autocounter
+                      ref="counter"
+                      :startAmount="0"
+                      :endAmount="Number(dataProduk)"
+                      :duration="3"
+                      :autoinit="true"
+                    />
                   </div>
                 </div>
               </q-card-section>
@@ -106,11 +112,20 @@
                   <q-td key="keuntunganPerProduk" :props="props">
                     Rp {{ props.row.keuntunganPerProduk }}
                   </q-td>
+                  <q-td key="stok" :props="props">
+                    Rp {{ props.row.stok }}
+                  </q-td>
                   <q-td key="fotoProduk" :props="props">
-                    Rp {{ props.row.fotoProduk }}
+                    <q-item>
+                      <q-item-section>
+                        <q-avatar square>
+                          <img :src="`${port}/${props.row.fotoProduk}`" />
+                        </q-avatar>
+                      </q-item-section>
+                    </q-item>
                   </q-td>
                   <q-td key="keterangan" :props="props">
-                    Rp {{ props.row.keterangan }}
+                    {{ props.row.keterangan }}
                   </q-td>
                   <q-td key="action" :props="props">
                     <div class="justify-center q-gutter-x-xs">
@@ -180,21 +195,21 @@
                 <q-card-section class="q-gutter-md fit">
                   <q-input
                     dense
-                    v-model="namaProduk"
+                    v-model="form.namaProduk"
                     outlined
                     label="Nama Produk"
                   />
                   <q-input
                     dense
                     type="number"
-                    v-model="hpp"
+                    v-model="form.hpp"
                     outlined
                     label="Harga Pokok Penjualan"
                   />
                   <q-input
                     dense
                     type="number"
-                    v-model="hargaJual"
+                    v-model="form.hargaJual"
                     outlined
                     label="Harga Jual"
                   />
@@ -206,27 +221,32 @@
                   <q-input
                     dense
                     type="number"
-                    v-model="keuntunganPerProduk"
+                    v-model="form.keuntunganPerProduk"
                     outlined
                     label="Keuntungan Per Produk"
                   />
                   <q-input
                     dense
                     type="number"
-                    v-model="stok"
+                    v-model="form.stok"
                     outlined
                     label="Stok"
                   />
-                  <q-input
+                  <q-file
+                    accept=".jpg, image/*"
+                    color="primary"
                     dense
-                    type="file"
-                    v-model="fotoProduk"
                     outlined
-                    label="Foto Produk"
-                  />
+                    v-model="fotoProduk"
+                    label="Upload Foto Produk"
+                  >
+                    <template v-slot:prepend>
+                      <q-icon name="cloud_upload" />
+                    </template>
+                  </q-file>
                   <q-input
                     dense
-                    v-model="keterangan"
+                    v-model="form.keterangan"
                     outlined
                     label="Keterangan"
                   />
@@ -248,7 +268,7 @@
 </template>
 
 <script>
-// import Vue3autocounter from "vue3-autocounter";
+import Vue3autocounter from "vue3-autocounter";
 
 const columns = [
   {
@@ -306,7 +326,7 @@ const data = [];
 export default {
   name: "ProdukPage",
   components: {
-    // "vue3-autocounter": Vue3autocounter,
+    "vue3-autocounter": Vue3autocounter,
   },
   data() {
     return {
@@ -319,13 +339,17 @@ export default {
       visibles: false,
       editMode: false,
       dialog: false,
-      namaProduk: null,
-      hpp: null,
-      hargaJual: null,
-      keuntunganPerProduk: null,
-      stok: null,
+      dataProduk: 200,
+      form: {
+        namaProduk: null,
+        hpp: null,
+        hargaJual: null,
+        keuntunganPerProduk: null,
+        stok: null,
+        keterangan: null,
+      },
+      port: "http://localhost:5000/",
       fotoProduk: null,
-      keterangan: null,
       idActive: null,
     };
   },
@@ -336,22 +360,26 @@ export default {
     openDialog(editMode, data) {
       this.editMode = editMode;
       if (editMode) {
-        this.namaProduk = data.namaProduk;
-        this.hpp = data.hpp;
-        this.hargaJual = data.hargaJual;
-        this.keuntunganPerProduk = data.keuntunganPerProduk;
-        this.stok = data.stok;
+        this.form = data.form;
         this.fotoProduk = data.fotoProduk;
-        this.keterangan = data.keterangan;
+        // this.namaProduk = data.namaProduk;
+        // this.hpp = data.hpp;
+        // this.hargaJual = data.hargaJual;
+        // this.keuntunganPerProduk = data.keuntunganPerProduk;
+        // this.stok = data.stok;
+        // this.fotoProduk = data.fotoProduk;
+        // this.keterangan = data.keterangan;
         this.idActive = data._id;
       } else {
-        this.namaProduk = null;
-        this.hpp = null;
-        this.hargaJual = null;
-        this.keuntunganPerProduk = null;
-        this.stok = null;
+        this.form = null;
         this.fotoProduk = null;
-        this.keterangan = null;
+        // this.namaProduk = null;
+        // this.hpp = null;
+        // this.hargaJual = null;
+        // this.keuntunganPerProduk = null;
+        // this.stok = null;
+        // this.fotoProduk = null;
+        // this.keterangan = null;
         this.idActive = null;
       }
       this.dialog = true;
@@ -361,25 +389,29 @@ export default {
       this.dialog = false;
     },
     resetForm() {
-      this.namaProduk = null;
-      this.hpp = null;
-      this.hargaJual = null;
-      this.keuntunganPerProduk = null;
-      this.stok = null;
+      this.form = null;
       this.fotoProduk = null;
-      this.keterangan = null;
+      // this.namaProduk = null;
+      // this.hpp = null;
+      // this.hargaJual = null;
+      // this.keuntunganPerProduk = null;
+      // this.stok = null;
+      // this.fotoProduk = null;
+      // this.keterangan = null;
     },
     onSubmit() {
       if (this.editMode) {
         this.$axios
           .put(`produk/edit/${this.idActive}`, {
-            namaProduk: this.namaProduk,
-            hpp: this.hpp,
-            hargaJual: this.hargaJual,
-            keuntunganPerProduk: this.keuntunganPerProduk,
-            stok: this.stok,
+            form: this.form,
             fotoProduk: this.fotoProduk,
-            keterangan: this.keterangan,
+            // namaProduk: this.namaProduk,
+            // hpp: this.hpp,
+            // hargaJual: this.hargaJual,
+            // keuntunganPerProduk: this.keuntunganPerProduk,
+            // stok: this.stok,
+            // fotoProduk: this.fotoProduk,
+            // keterangan: this.keterangan,
           })
           .then((res) => {
             if ((res.data.sukses = true)) {
@@ -390,27 +422,21 @@ export default {
             this.resetForm();
           });
       } else {
-        this.$axios
-          .post("produk/add", {
-            namaProduk: this.namaProduk,
-            hpp: this.hpp,
-            hargaJual: this.hargaJual,
-            keuntunganPerProduk: this.keuntunganPerProduk,
-            stok: this.stok,
-            fotoProduk: this.fotoProduk,
-            keterangan: this.keterangan,
-          })
-          .then((res) => {
-            if ((res.data.sukses = true)) {
-              this.$successNotif(res.data.pesan, "positive");
-            }
-            this.dialog = false;
-            this.getData();
-          });
+        const formData = new FormData();
+        formData.append("fotoProduk", this.fotoProduk);
+        formData.append("data", JSON.stringify(this.form));
+        this.$axios.post("produk/add", formData).then((res) => {
+          if ((res.data.sukses = true)) {
+            this.$successNotif(res.data.pesan, "positive");
+          }
+          this.dialog = false;
+          this.getData();
+        });
       }
     },
     getData() {
       this.$axios.get("produk/getAll").then((res) => {
+        console.log(res);
         if (res.data.sukses) {
           this.data = res.data.data;
         }

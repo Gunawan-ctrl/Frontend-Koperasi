@@ -84,12 +84,12 @@ const routes = [
         component: () => import("pages/UsahaKopi/Dashboard.vue"),
       },
       {
-        path: "/penjualan",
+        path: "/penjualan-kopi",
         name: "penjualan",
         component: () => import("pages/UsahaKopi/Penjualan.vue"),
       },
       {
-        path: "/pembelian",
+        path: "/pembelian-kopi",
         name: "pembelian",
         component: () => import("pages/UsahaKopi/Pembelian.vue"),
       },
@@ -117,6 +117,11 @@ const routes = [
         path: "/supplier-kopi",
         name: "supplier",
         component: () => import("pages/UsahaKopi/Supplier.vue"),
+      },
+      {
+        path: "/inventaris-kopi",
+        name: "inventaris",
+        component: () => import("pages/UsahaKopi/Inventaris.vue"),
       },
     ],
   },

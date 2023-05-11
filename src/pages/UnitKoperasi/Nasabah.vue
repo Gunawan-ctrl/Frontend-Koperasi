@@ -84,7 +84,7 @@
                   {{ props.row.status }}
                 </q-td>
                 <q-td key="jumlahPinjaman" :props="props">
-                  {{ props.row.jumlahPinjaman }}
+                  Rp. {{ props.row.jumlahPinjaman }}
                 </q-td>
                 <q-td key="action" :props="props">
                   <div class="justify-center q-gutter-x-xs">
@@ -301,7 +301,7 @@ export default {
       this.editMode = false;
       this.dialog = false;
     },
-    resetForm() {
+    onReset() {
       this.nama = null;
       this.email = null;
       this.alamat = null;
@@ -327,7 +327,7 @@ export default {
             }
             this.getData();
             this.resetDialog();
-            this.resetForm();
+            this.onReset();
           });
       } else {
         this.$axios
@@ -351,7 +351,6 @@ export default {
     },
     getData() {
       this.$axios.get("nasabah/getAll").then((res) => {
-        console.log(res);
         if (res.data.sukses) {
           this.rows = res.data.data;
         }
@@ -373,14 +372,6 @@ export default {
             this.getData();
           });
         });
-    },
-    onReset() {
-      this.nama = null;
-      this.email = null;
-      this.alamat = null;
-      this.kelamin = null;
-      this.status = null;
-      this.jumlahPinjaman = null;
     },
     exportTable() {
       const content = ["No Anggota; Nama; Email; Alamat; Kelamin; Status"]

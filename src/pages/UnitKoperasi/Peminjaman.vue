@@ -127,7 +127,7 @@
         <q-item>
           <q-item-section avatar>
             <q-avatar>
-              <q-icon name="group_add" size="30px" color="blue-7" />
+              <q-icon name="payments" size="30px" color="blue-7" />
             </q-avatar>
           </q-item-section>
 
@@ -308,7 +308,7 @@ export default {
       this.editMode = false;
       this.dialog = false;
     },
-    resetForm() {
+    onReset() {
       this.tanggal = null;
       this.namaPeminjam = null;
       this.keterangan = null;
@@ -333,7 +333,7 @@ export default {
             }
             this.getData();
             this.resetDialog();
-            this.resetForm();
+            this.onReset();
           });
       } else {
         this.$axios
@@ -377,14 +377,6 @@ export default {
             this.getData();
           });
         });
-    },
-    onReset() {
-      this.tanggal = null;
-      this.namaPeminjam = null;
-      this.keterangan = null;
-      this.jumlah = null;
-      this.bunga = null;
-      this.total = null;
     },
   },
 };
