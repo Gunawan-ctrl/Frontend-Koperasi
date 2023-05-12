@@ -79,15 +79,6 @@
                 <q-td key="namaBarangJasa" :props="props">
                   {{ props.row.namaBarangJasa }}
                 </q-td>
-                <!-- <q-td key="gambar" :props="props">
-                  <q-item>
-                    <q-item-section>
-                      <q-avatar square>
-                        <img :src="props.row.gambar" />
-                      </q-avatar>
-                    </q-item-section>
-                  </q-item>
-                </q-td> -->
                 <q-td key="deskripsi" :props="props">
                   {{ props.row.deskripsi }}
                 </q-td>
@@ -95,10 +86,10 @@
                   Rp {{ props.row.harga }}
                 </q-td>
                 <q-td key="jumlah" :props="props">
-                  Rp {{ props.row.jumlah }}
+                  {{ props.row.jumlah }}
                 </q-td>
                 <q-td key="total" :props="props">
-                  Rp {{ props.row.total }}
+                  Rp {{ props.row.harga * props.row.jumlah }}
                 </q-td>
                 <q-td key="action" :props="props">
                   <div class="justify-center q-gutter-x-xs">
@@ -179,7 +170,6 @@
                 outlined
                 label="Nama Barang / Jasa"
               />
-              <q-input dense v-model="deskripsi" outlined label="Deskripsi" />
             </q-card-section>
 
             <q-separator vertical />
@@ -199,13 +189,7 @@
                 outlined
                 label="Jumlah"
               />
-              <q-input
-                dense
-                type="number"
-                v-model="total"
-                outlined
-                label="Total"
-              />
+              <q-input dense v-model="deskripsi" outlined label="Deskripsi" />
             </q-card-section>
           </q-card-section>
 

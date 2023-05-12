@@ -75,7 +75,7 @@
                   {{ props.row.keterangan }}
                 </q-td>
                 <q-td key="total" :props="props">
-                  {{ props.row.total }}
+                  Rp {{ props.row.total }}
                 </q-td>
                 <q-td key="action" :props="props">
                   <div class="justify-center q-gutter-x-xs">
@@ -141,13 +141,32 @@
         <q-form @submit="onSubmit()" @reset="onReset()">
           <q-card-section horizontal>
             <q-card-section class="q-gutter-md fit">
-              <q-input dense v-model="tanggal" outlined label="Tanggal" />
               <q-input
+                dense
+                type="date"
+                v-model="tanggal"
+                outlined
+                label="Tanggal"
+              />
+              <q-select
+                option-label="nama"
+                key="namaPeminjam"
+                :options="optionPeminjam"
                 dense
                 v-model="namaPeminjam"
                 outlined
                 label="Nama Peminjam"
-              />
+              >
+                <template v-slot:option="scope">
+                  <q-item v-bind="scope.itemProps">
+                    <q-item-section>
+                      <q-item-label caption>
+                        {{ scope.opt.nama }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
             </q-card-section>
 
             <q-separator vertical />
@@ -226,6 +245,7 @@ export default {
   },
   created() {
     this.getData();
+    this.getNasabah();
   },
   methods: {
     openDialog(editMode, data) {
@@ -276,7 +296,7 @@ export default {
         this.$axios
           .post("peminjaman/add", {
             tanggal: this.tanggal,
-            namaPeminjam: this.namaPeminjam,
+            namaPeminjam: this.namaPeminjam.nama,
             keterangan: this.keterangan,
             jumlah: this.jumlah,
             bunga: this.bunga,
@@ -290,6 +310,14 @@ export default {
             this.getData();
           });
       }
+    },
+    getNasabah() {
+      this.$axios.get("nasabah/getAll").then((res) => {
+        if (res.data.sukses) {
+          this.optionPeminjam = res.data.data;
+          console.log(this.optionPeminjam);
+        }
+      });
     },
     hapusData(_id) {
       this.$q

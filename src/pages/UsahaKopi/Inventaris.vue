@@ -103,9 +103,6 @@
                   <q-td key="namaInventaris" :props="props">
                     {{ props.row.namaInventaris }}
                   </q-td>
-                  <q-td key="jumlah" :props="props">
-                    {{ props.row.jumlah }}
-                  </q-td>
                   <q-td key="masaManfaat" :props="props">
                     {{ props.row.masaManfaat }}
                   </q-td>
@@ -117,6 +114,9 @@
                   </q-td>
                   <q-td key="akumulasiPenyusutan" :props="props">
                     {{ props.row.akumulasiPenyusutan }}
+                  </q-td>
+                  <q-td key="jumlah" :props="props">
+                    {{ props.row.jumlah }}
                   </q-td>
                   <q-td key="nilaiSisaInventori" :props="props">
                     {{ props.row.nilaiSisaInventori }}
@@ -235,7 +235,13 @@
                 <q-separator vertical />
 
                 <q-card-section class="q-gutter-md fit">
-                  <q-input dense v-model="jumlah" outlined label="Jumlah" />
+                  <q-input
+                    dense
+                    type="number"
+                    v-model="jumlah"
+                    outlined
+                    label="Jumlah"
+                  />
                   <q-input
                     dense
                     type="number"
@@ -292,12 +298,6 @@ const columns = [
     align: "left",
   },
   {
-    name: "jumlah",
-    label: "Jumlah",
-    field: " jumlah",
-    align: "left",
-  },
-  {
     name: "masaManfaat",
     label: "Masa Manfaat",
     field: "masaManfaat",
@@ -319,6 +319,12 @@ const columns = [
     name: "akumulasiPenyusutan",
     label: "Akumulasi Penyusutan",
     field: "akumulasiPenyusutan",
+    align: "left",
+  },
+  {
+    name: "jumlah",
+    label: "Jumlah",
+    field: " jumlah",
     align: "left",
   },
   {
@@ -485,6 +491,7 @@ export default {
     },
     getData() {
       this.$axios.get("inventaris/getAll").then((res) => {
+        console.log(res);
         if (res.data.sukses) {
           this.data = res.data.data;
         }

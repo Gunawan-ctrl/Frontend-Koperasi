@@ -90,10 +90,10 @@
         </div>
       </div>
       <div class="row items-center q-col-gutter-md q-py-md">
-        <div class="col-md-8">
+        <div class="col-md-8 col-xs-12">
           <ChartsBar :data="chartBar" :color="color" />
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 col-xs-12">
           <ChartsDoughnut :data="chartDoughnut" />
         </div>
       </div>
@@ -142,6 +142,9 @@ export default defineComponent({
       saldo: "201.000",
       debit: "100.000",
       kredit: "50.000",
+      chartDoughnut: null,
+      chartBar: null,
+      color: null,
     };
   },
   methods: {},

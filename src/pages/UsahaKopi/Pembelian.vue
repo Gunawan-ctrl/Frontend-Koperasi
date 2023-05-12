@@ -100,6 +100,15 @@
 
               <template v-slot:body="props">
                 <q-tr :props="props">
+                  <q-td key="tanggal" :props="props">
+                    {{
+                      new Date(props.row.tanggal).toLocaleDateString("id", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })
+                    }}
+                  </q-td>
                   <q-td key="namaSupplier" :props="props">
                     {{ props.row.namaSupplier }}
                   </q-td>
@@ -109,14 +118,14 @@
                   <q-td key="keterangan" :props="props">
                     {{ props.row.keterangan }}
                   </q-td>
-                  <q-td key="jumlah" :props="props">
-                    {{ props.row.jumlah }}
-                  </q-td>
                   <q-td key="harga" :props="props">
                     Rp. {{ props.row.harga }}
                   </q-td>
+                  <q-td key="jumlah" :props="props">
+                    {{ props.row.jumlah }}
+                  </q-td>
                   <q-td key="total" :props="props">
-                    Rp. {{ props.row.total }}
+                    Rp. {{ props.row.harga * props.row.jumlah }}
                   </q-td>
                   <q-td key="action" :props="props">
                     <div class="justify-center q-gutter-x-xs">
@@ -186,6 +195,13 @@
                 <q-card-section class="q-gutter-md fit">
                   <q-input
                     dense
+                    type="date"
+                    v-model="tanggal"
+                    outlined
+                    label="Tanggal"
+                  />
+                  <q-input
+                    dense
                     v-model="namaSupplier"
                     outlined
                     label="Nama Supplier "
@@ -197,12 +213,6 @@
                     outlined
                     label="Nomor Telpon"
                   />
-                  <q-input
-                    dense
-                    v-model="keterangan"
-                    outlined
-                    label="Keterangan"
-                  />
                 </q-card-section>
 
                 <q-separator vertical />
@@ -210,10 +220,9 @@
                 <q-card-section class="q-gutter-md fit">
                   <q-input
                     dense
-                    type="number"
-                    v-model="jumlah"
+                    v-model="keterangan"
                     outlined
-                    label="Jumlah"
+                    label="Keterangan"
                   />
                   <q-input
                     dense
@@ -225,9 +234,9 @@
                   <q-input
                     dense
                     type="number"
-                    v-model="total"
+                    v-model="jumlah"
                     outlined
-                    label="Total"
+                    label="Jumlah"
                   />
                 </q-card-section>
               </q-card-section>
@@ -250,6 +259,12 @@
 import Vue3autocounter from "vue3-autocounter";
 const columns = [
   {
+    name: "tanggal",
+    label: "Tanggal",
+    field: "tanggal",
+    align: "left",
+  },
+  {
     name: "namaSupplier",
     label: "Nama Supplier",
     field: "namaSupplier",
@@ -268,15 +283,15 @@ const columns = [
     align: "left",
   },
   {
-    name: "jumlah",
-    label: "Jumlah",
-    field: "jumlah",
-    align: "left",
-  },
-  {
     name: "harga",
     label: "Harga",
     field: "harga",
+    align: "left",
+  },
+  {
+    name: "jumlah",
+    label: "Jumlah",
+    field: "jumlah",
     align: "left",
   },
   {
@@ -312,6 +327,7 @@ export default {
       editMode: false,
       dialog: false,
       dataPembelian: 4000,
+      tanggal: null,
       namaSupplier: null,
       nomorTelepon: null,
       keterangan: null,
@@ -328,6 +344,7 @@ export default {
     openDialog(editMode, data) {
       this.editMode = editMode;
       if (editMode) {
+        this.tanggal = data.tanggal;
         this.namaSupplier = data.namaSupplier;
         this.nomorTelepon = data.nomorTelepon;
         this.keterangan = data.keterangan;
@@ -336,6 +353,7 @@ export default {
         this.total = data.total;
         this.idActive = data._id;
       } else {
+        this.tanggal = null;
         this.namaSupplier = null;
         this.nomorTelepon = null;
         this.harga = null;
@@ -351,6 +369,7 @@ export default {
       this.dialog = false;
     },
     onReset() {
+      this.tanggal = null;
       this.namaSupplier = null;
       this.nomorTelepon = null;
       this.harga = null;
@@ -362,6 +381,7 @@ export default {
       if (this.editMode) {
         this.$axios
           .put(`pembelian/edit/${this.idActive}`, {
+            tanggal: this.tanggal,
             namaSupplier: this.namaSupplier,
             nomorTelepon: this.nomorTelepon,
             harga: this.harga,
@@ -380,6 +400,7 @@ export default {
       } else {
         this.$axios
           .post("pembelian/add", {
+            tanggal: this.tanggal,
             namaSupplier: this.namaSupplier,
             nomorTelepon: this.nomorTelepon,
             harga: this.harga,

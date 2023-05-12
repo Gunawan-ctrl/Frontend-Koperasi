@@ -72,7 +72,9 @@ export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Menu Access",
   data() {
-    return {};
+    return {
+      dataUser: this.$q.localStorage.getItem("dataUser"),
+    };
   },
 };
 </script>

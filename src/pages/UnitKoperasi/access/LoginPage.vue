@@ -119,20 +119,25 @@ export default {
     onSubmit() {
       this.$axios
         .post("user/login", {
+          // username: "gunawan",
+          // password: 1234,
           username: this.username,
           password: this.password,
         })
         .then((res) => {
           console.log(res);
-          if ((res.data.status = true)) {
+          if (res.data.sukses) {
+            this.$q.localStorage.set("dataUser", res.data.data);
             this.$router.push({ name: "accesPengguna" });
-            this.$successNotif("selamat berhasil login", "positive");
+            this.$successNotif(res.data.pesan, "positive");
+          } else {
+            this.$errorNotif(res.data.pesan, "negative");
           }
         });
     },
     onReset() {
-      this.form.email = null;
-      this.form.password = null;
+      this.username = null;
+      this.password = null;
     },
   },
 };

@@ -1,10 +1,13 @@
 const routes = [
   {
-    path: "",
+    path: "/",
     component: () => import("layouts/MainLayout.vue"),
+    meta: {
+      authAdmin: true,
+    },
     children: [
       {
-        path: "/",
+        path: "/dashboard",
         name: "dashboard",
         component: () => import("pages/UnitKoperasi/IndexPage.vue"),
       },
@@ -77,9 +80,12 @@ const routes = [
   {
     path: "",
     component: () => import("layouts/KopiLayout.vue"),
+    meta: {
+      authAdmin: true,
+    },
     children: [
       {
-        path: "/dashboard",
+        path: "/dashboard-kopi",
         name: "dashboardKopi",
         component: () => import("pages/UsahaKopi/Dashboard.vue"),
       },
@@ -125,17 +131,18 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/acces-pengguna",
+    name: "accesPengguna",
+    component: () => import("pages/UnitKoperasi/access/MenuAcces.vue"),
+  },
 
   {
     path: "/login",
     name: "login",
     component: () => import("pages/UnitKoperasi/access/LoginPage.vue"),
   },
-  {
-    path: "/acces-pengguna",
-    name: "accesPengguna",
-    component: () => import("pages/UnitKoperasi/access/MenuAcces.vue"),
-  },
+
   {
     path: "/:catchAll(.*)*",
     component: () => import("pages/ErrorNotFound.vue"),

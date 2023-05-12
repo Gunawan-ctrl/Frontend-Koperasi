@@ -84,7 +84,8 @@
                   {{ props.row.status }}
                 </q-td>
                 <q-td key="jumlahPinjaman" :props="props">
-                  Rp. {{ props.row.jumlahPinjaman }}
+                  <!-- Rp. {{ props.row.jumlahPinjaman }} -->
+                  Rp. {{ this.total }}
                 </q-td>
                 <q-td key="action" :props="props">
                   <div class="justify-center q-gutter-x-xs">
@@ -262,6 +263,7 @@ export default {
       },
       visibles: false,
       dialog: false,
+      total: null,
       nama: null,
       email: null,
       alamat: null,
@@ -274,6 +276,7 @@ export default {
   },
   created() {
     this.getData();
+    this.getPeminjaman();
   },
   methods: {
     openDialog(editMode, data) {
@@ -353,6 +356,19 @@ export default {
       this.$axios.get("nasabah/getAll").then((res) => {
         if (res.data.sukses) {
           this.rows = res.data.data;
+          console.log(this.rows);
+        }
+      });
+    },
+    getPeminjaman() {
+      this.$axios.get("peminjaman/getAll").then((res) => {
+        if (res.data.sukses) {
+          res.data.data.forEach((data) => {
+            this.total = data.total;
+            console.log(this.total);
+          });
+          // this.totalPeminjaman = res.data.data;
+          // console.log(this.totalPeminjaman);
         }
       });
     },

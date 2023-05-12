@@ -100,6 +100,15 @@
               </template>
               <template v-slot:body="props">
                 <q-tr :props="props">
+                  <q-td key="tanggal" :props="props">
+                    {{
+                      new Date(props.row.tanggal).toLocaleDateString("id", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })
+                    }}
+                  </q-td>
                   <q-td key="namaPersediaan" :props="props">
                     {{ props.row.namaPersediaan }}
                   </q-td>
@@ -107,13 +116,13 @@
                     {{ props.row.kuantitas }}
                   </q-td>
                   <q-td key="satuan" :props="props">
-                    Rp {{ props.row.satuan }}
+                    {{ props.row.satuan }}
                   </q-td>
                   <q-td key="harga" :props="props">
                     Rp {{ props.row.harga }}
                   </q-td>
                   <q-td key="total" :props="props">
-                    Rp {{ props.row.total }}
+                    Rp {{ props.row.harga * props.row.satuan }}
                   </q-td>
                   <q-td key="action" :props="props">
                     <div class="justify-center q-gutter-x-xs">
@@ -181,6 +190,13 @@
                 <q-card-section class="q-gutter-md fit">
                   <q-input
                     dense
+                    type="date"
+                    v-model="tanggal"
+                    outlined
+                    label="Tanggal"
+                  />
+                  <q-input
+                    dense
                     v-model="namaPersediaan"
                     outlined
                     label="Nama Persediaan "
@@ -210,13 +226,6 @@
                     outlined
                     label="Harga"
                   />
-                  <q-input
-                    type="number"
-                    dense
-                    v-model="total"
-                    outlined
-                    label="Total"
-                  />
                 </q-card-section>
               </q-card-section>
 
@@ -238,6 +247,12 @@
 import Vue3autocounter from "vue3-autocounter";
 
 const columns = [
+  {
+    name: "tanggal",
+    label: "Tanggal",
+    field: "tanggal",
+    align: "left",
+  },
   {
     name: "namaPersediaan",
     label: "Nama Persediaan",
@@ -295,6 +310,7 @@ export default {
       editMode: false,
       dialog: false,
       dataStok: 2000,
+      tanggal: null,
       namaPersediaan: null,
       kuantitas: null,
       satuan: null,
@@ -310,6 +326,7 @@ export default {
     openDialog(editMode, data) {
       this.editMode = editMode;
       if (editMode) {
+        this.tanggal = data.tanggal;
         this.namaPersediaan = data.namaPersediaan;
         this.kuantitas = data.kuantitas;
         this.satuan = data.satuan;
@@ -317,6 +334,7 @@ export default {
         this.total = data.total;
         this.idActive = data._id;
       } else {
+        this.tanggal = null;
         this.namaPersediaan = null;
         this.kuantitas = null;
         this.satuan = null;
@@ -330,7 +348,8 @@ export default {
       this.editMode = false;
       this.dialog = false;
     },
-    resetForm() {
+    onReset() {
+      this.tanggal = null;
       this.namaPersediaan = null;
       this.kuantitas = null;
       this.satuan = null;
@@ -341,6 +360,7 @@ export default {
       if (this.editMode) {
         this.$axios
           .put(`stok/edit/${this.idActive}`, {
+            tanggal: this.tanggal,
             namaPersediaan: this.namaPersediaan,
             kuantitas: this.kuantitas,
             satuan: this.satuan,
@@ -354,11 +374,12 @@ export default {
             }
             this.getData();
             this.resetDialog();
-            this.resetForm();
+            this.onReset();
           });
       } else {
         this.$axios
           .post("stok/add", {
+            tanggal: this.tanggal,
             namaPersediaan: this.namaPersediaan,
             kuantitas: this.kuantitas,
             satuan: this.satuan,
@@ -376,7 +397,7 @@ export default {
     },
     getData() {
       this.$axios.get("stok/getAll").then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.data.sukses) {
           this.data = res.data.data;
         }
@@ -398,13 +419,6 @@ export default {
             this.getData();
           });
         });
-    },
-    onReset() {
-      this.namaPersediaan = null;
-      this.kuantitas = null;
-      this.satuan = null;
-      this.harga = null;
-      this.total = null;
     },
   },
 };

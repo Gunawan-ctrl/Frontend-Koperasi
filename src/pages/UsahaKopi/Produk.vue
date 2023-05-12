@@ -103,14 +103,14 @@
                   <q-td key="namaProduk" :props="props">
                     {{ props.row.namaProduk }}
                   </q-td>
-                  <q-td key="hpp" :props="props">
-                    {{ props.row.hpp }}
-                  </q-td>
                   <q-td key="hargaJual" :props="props">
                     Rp {{ props.row.hargaJual }}
                   </q-td>
+                  <q-td key="hpp" :props="props">
+                    {{ props.row.hpp }}
+                  </q-td>
                   <q-td key="keuntunganPerProduk" :props="props">
-                    Rp {{ props.row.keuntunganPerProduk }}
+                    Rp {{ props.row.hargaJual - props.row.hpp }}
                   </q-td>
                   <q-td key="stok" :props="props">
                     Rp {{ props.row.stok }}
@@ -221,13 +221,6 @@
                   <q-input
                     dense
                     type="number"
-                    v-model="form.keuntunganPerProduk"
-                    outlined
-                    label="Keuntungan Per Produk"
-                  />
-                  <q-input
-                    dense
-                    type="number"
                     v-model="form.stok"
                     outlined
                     label="Stok"
@@ -278,15 +271,15 @@ const columns = [
     align: "left",
   },
   {
-    name: "hpp",
-    label: "Harga Pokok Penjualan",
-    field: "hpp",
-    align: "left",
-  },
-  {
     name: "hargaJual",
     label: "Harga Jual",
     field: "hargaJual",
+    align: "left",
+  },
+  {
+    name: "hpp",
+    label: "HPP",
+    field: "hpp",
     align: "left",
   },
   {
@@ -360,26 +353,22 @@ export default {
     openDialog(editMode, data) {
       this.editMode = editMode;
       if (editMode) {
-        this.form = data.form;
+        this.form.namaProduk = data.form.namaProduk;
+        this.form.hpp = data.form.hpp;
+        this.form.hargaJual = data.form.hargaJual;
+        this.form.keuntunganPerProduk = data.form.keuntunganPerProduk;
+        this.form.stok = data.form.stok;
+        this.form.keterangan = data.form.keterangan;
         this.fotoProduk = data.fotoProduk;
-        // this.namaProduk = data.namaProduk;
-        // this.hpp = data.hpp;
-        // this.hargaJual = data.hargaJual;
-        // this.keuntunganPerProduk = data.keuntunganPerProduk;
-        // this.stok = data.stok;
-        // this.fotoProduk = data.fotoProduk;
-        // this.keterangan = data.keterangan;
         this.idActive = data._id;
       } else {
-        this.form = null;
+        this.form.namaProduk = null;
+        this.form.hpp = null;
+        this.form.hargaJual = null;
+        this.form.keuntunganPerProduk = null;
+        this.form.stok = null;
+        this.form.keterangan = null;
         this.fotoProduk = null;
-        // this.namaProduk = null;
-        // this.hpp = null;
-        // this.hargaJual = null;
-        // this.keuntunganPerProduk = null;
-        // this.stok = null;
-        // this.fotoProduk = null;
-        // this.keterangan = null;
         this.idActive = null;
       }
       this.dialog = true;
@@ -388,16 +377,14 @@ export default {
       this.editMode = false;
       this.dialog = false;
     },
-    resetForm() {
-      this.form = null;
+    onReset() {
+      this.form.namaProduk = null;
+      this.form.hpp = null;
+      this.form.hargaJual = null;
+      this.form.keuntunganPerProduk = null;
+      this.form.stok = null;
+      this.form.keterangan = null;
       this.fotoProduk = null;
-      // this.namaProduk = null;
-      // this.hpp = null;
-      // this.hargaJual = null;
-      // this.keuntunganPerProduk = null;
-      // this.stok = null;
-      // this.fotoProduk = null;
-      // this.keterangan = null;
     },
     onSubmit() {
       if (this.editMode) {
@@ -405,13 +392,6 @@ export default {
           .put(`produk/edit/${this.idActive}`, {
             form: this.form,
             fotoProduk: this.fotoProduk,
-            // namaProduk: this.namaProduk,
-            // hpp: this.hpp,
-            // hargaJual: this.hargaJual,
-            // keuntunganPerProduk: this.keuntunganPerProduk,
-            // stok: this.stok,
-            // fotoProduk: this.fotoProduk,
-            // keterangan: this.keterangan,
           })
           .then((res) => {
             if ((res.data.sukses = true)) {
@@ -419,7 +399,7 @@ export default {
             }
             this.getData();
             this.resetDialog();
-            this.resetForm();
+            this.onReset();
           });
       } else {
         const formData = new FormData();
@@ -458,15 +438,6 @@ export default {
             this.getData();
           });
         });
-    },
-    onReset() {
-      this.namaProduk = null;
-      this.hpp = null;
-      this.hargaJual = null;
-      this.keuntunganPerProduk = null;
-      this.stok = null;
-      this.fotoProduk = null;
-      this.keterangan = null;
     },
   },
 };

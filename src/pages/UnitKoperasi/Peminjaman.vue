@@ -86,10 +86,14 @@
                   {{ props.row.jumlah }}
                 </q-td>
                 <q-td key="bunga" :props="props">
-                  {{ props.row.bunga }}
+                  {{ props.row.bunga }} %
                 </q-td>
                 <q-td key="total" :props="props">
-                  {{ props.row.total }}
+                  Rp
+                  {{
+                    (props.row.jumlah * props.row.bunga) / 100 +
+                    props.row.jumlah
+                  }}
                 </q-td>
                 <q-td key="action" :props="props">
                   <div class="justify-center q-gutter-x-xs">
@@ -164,12 +168,25 @@
                 outlined
                 label="Tanggal"
               />
-              <q-input
+              <q-select
+                option-label="nama"
+                key="namaPeminjam"
+                :options="optionPeminjam"
                 dense
                 v-model="namaPeminjam"
                 outlined
                 label="Nama Peminjam"
-              />
+              >
+                <template v-slot:option="scope">
+                  <q-item v-bind="scope.itemProps">
+                    <q-item-section>
+                      <q-item-label caption>
+                        {{ scope.opt.nama }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
               <q-input dense v-model="keterangan" outlined label="Keterangan" />
             </q-card-section>
 
@@ -189,13 +206,6 @@
                 v-model="bunga"
                 outlined
                 label="Bunga (%)"
-              />
-              <q-input
-                dense
-                type="number"
-                v-model="total"
-                outlined
-                label="Total"
               />
             </q-card-section>
           </q-card-section>
@@ -272,6 +282,7 @@ export default {
       visibles: false,
       dialog: false,
       tanggal: null,
+      optionPeminjam: [],
       namaPeminjam: null,
       keterangan: null,
       jumlah: null,
@@ -281,8 +292,13 @@ export default {
   },
   created() {
     this.getData();
+    this.getPeminjam();
   },
   methods: {
+    // totalPeminjaman() {
+    //   const jumlah = this.jumlah;
+    //   const bunga = this.bunga;
+    // },
     openDialog(editMode, data) {
       this.editMode = editMode;
       if (editMode) {
@@ -339,7 +355,7 @@ export default {
         this.$axios
           .post("peminjaman/add", {
             tanggal: this.tanggal,
-            namaPeminjam: this.namaPeminjam,
+            namaPeminjam: this.namaPeminjam.nama,
             keterangan: this.keterangan,
             jumlah: this.jumlah,
             bunga: this.bunga,
@@ -347,6 +363,7 @@ export default {
           })
           .then((res) => {
             if ((res.data.sukses = true)) {
+              console.log(this.namaPeminjam);
               this.$successNotif(res.data.pesan, "positive");
             }
             this.dialog = false;
@@ -358,6 +375,13 @@ export default {
       this.$axios.get("peminjaman/getAll").then((res) => {
         if (res.data.sukses) {
           this.rows = res.data.data;
+        }
+      });
+    },
+    getPeminjam() {
+      this.$axios.get("nasabah/getAll").then((res) => {
+        if (res.data.sukses) {
+          this.optionPeminjam = res.data.data;
         }
       });
     },

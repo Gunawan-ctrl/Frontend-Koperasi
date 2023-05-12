@@ -307,7 +307,7 @@ export default {
       this.editMode = false;
       this.dialog = false;
     },
-    resetForm() {
+    onReset() {
       this.namaCustomer = null;
       this.alamat = null;
       this.nomorTelepon = null;
@@ -329,7 +329,7 @@ export default {
             }
             this.getData();
             this.resetDialog();
-            this.resetForm();
+            this.onReset();
           });
       } else {
         this.$axios
@@ -371,12 +371,6 @@ export default {
             this.getData();
           });
         });
-    },
-    onReset() {
-      this.namaCustomer = null;
-      this.alamat = null;
-      this.nomorTelepon = null;
-      this.email = null;
     },
   },
 };

@@ -40,8 +40,7 @@
               </q-avatar>
 
               <div class="text-subtitle1 q-mt-md q-mb-xs text-weight-bold">
-                <!-- {{ dataUser.namaLengkap }} -->
-                Gunawan
+                {{ dataUser.username }}
               </div>
 
               <q-btn
@@ -78,7 +77,7 @@
                 Koperasi Apps
               </q-item-label>
               <q-item-label class="text-grey text-overline">
-                Gunawan
+                {{ dataUser.username }}
               </q-item-label>
             </q-item-section>
           </q-item>
@@ -165,7 +164,12 @@
           </q-item-section>
         </q-item>
 
-        <q-item clickable :to="{ name: 'dataLaporan' }" v-ripple>
+        <q-item
+          clickable
+          active-class="active"
+          :to="{ name: 'dataLaporan' }"
+          v-ripple
+        >
           <q-item-section avatar>
             <q-icon name="description" />
           </q-item-section>
@@ -220,13 +224,12 @@ export default {
       leftDrawerOpen: false,
       konfirm: false,
       info: null,
+      dataUser: this.$q.localStorage.getItem("dataUser"),
     };
   },
   methods: {
-    toggleDarkMode() {
-      $q.dark.toggle();
-    },
     logout() {
+      this.$q.localStorage.clear();
       this.$router.push({ name: "login" });
     },
   },

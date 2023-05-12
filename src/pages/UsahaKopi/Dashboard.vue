@@ -78,10 +78,10 @@
         </div>
       </div>
       <div class="row items-center q-col-gutter-md q-pt-md">
-        <div class="col-md-8">
+        <div class="col-md-8 col-xs-12">
           <ChartsBarKopi :data="chartBarKopi" :color="color" />
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 col-xs-12">
           <ChartsDoughnutKopi :data="chartDoughnutKopi" />
         </div>
       </div>

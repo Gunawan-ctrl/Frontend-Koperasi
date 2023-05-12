@@ -99,20 +99,29 @@
               </template>
               <template v-slot:body="props">
                 <q-tr :props="props">
+                  <q-td key="tanggal" :props="props">
+                    {{
+                      new Date(props.row.tanggal).toLocaleDateString("id", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })
+                    }}
+                  </q-td>
                   <q-td key="namaBarangJasa" :props="props">
                     {{ props.row.namaBarangJasa }}
                   </q-td>
                   <q-td key="deskripsi" :props="props">
                     {{ props.row.deskripsi }}
                   </q-td>
-                  <q-td key="jumlah" :props="props">
-                    Rp {{ props.row.jumlah }}
-                  </q-td>
                   <q-td key="harga" :props="props">
                     Rp {{ props.row.harga }}
                   </q-td>
+                  <q-td key="jumlah" :props="props">
+                    {{ props.row.jumlah }}
+                  </q-td>
                   <q-td key="total" :props="props">
-                    Rp {{ props.row.total }}
+                    Rp {{ props.row.harga * props.row.jumlah }}
                   </q-td>
                   <q-td key="action" :props="props">
                     <div class="justify-center q-gutter-x-xs">
@@ -179,49 +188,44 @@
 
             <q-form @submit="onSubmit()" @reset="onReset()">
               <q-card-section horizontal>
-                <q-card-section class="q-gutter-xs fit">
+                <q-card-section class="q-gutter-md fit">
+                  <q-input
+                    dense
+                    type="date"
+                    v-model="tanggal"
+                    outlined
+                    label="Tanggal"
+                  />
                   <q-input
                     dense
                     v-model="namaBarangJasa"
                     outlined
                     label="Nama Barang / Jasa"
-                    hint="Nama Barang / Jasa"
                   />
                   <q-input
                     dense
                     v-model="deskripsi"
                     outlined
                     label="Deskripsi"
-                    hint="Deskripsi"
                   />
                 </q-card-section>
 
                 <q-separator vertical />
 
-                <q-card-section class="q-gutter-xs fit">
-                  <q-input
-                    dense
-                    type="number"
-                    v-model="jumlah"
-                    outlined
-                    label="Jumlah"
-                    hint="Jumlah Pengeluaran"
-                  />
+                <q-card-section class="q-gutter-md fit">
                   <q-input
                     dense
                     type="number"
                     v-model="harga"
                     outlined
                     label="Harga"
-                    hint="Harga"
                   />
                   <q-input
                     dense
                     type="number"
-                    v-model="total"
+                    v-model="jumlah"
                     outlined
-                    label="Total"
-                    hint="Total Pengeluaran"
+                    label="Jumlah"
                   />
                 </q-card-section>
               </q-card-section>
@@ -244,6 +248,12 @@
 import Vue3autocounter from "vue3-autocounter";
 
 const columns = [
+  {
+    name: "tanggal",
+    label: "Tanggal",
+    field: "tanggal",
+    align: "left",
+  },
   {
     name: "namaBarangJasa",
     label: "Nama Barang / Jasa",
@@ -301,6 +311,7 @@ export default {
       editMode: false,
       dialog: false,
       dataPengeluaran: 3000,
+      tanggal: null,
       namaBarangJasa: null,
       deskripsi: null,
       harga: null,
@@ -316,6 +327,7 @@ export default {
     openDialog(editMode, data) {
       this.editMode = editMode;
       if (editMode) {
+        this.tanggal = data.tanggal;
         this.namaBarangJasa = data.namaBarangJasa;
         this.deskripsi = data.deskripsi;
         this.harga = data.harga;
@@ -323,6 +335,7 @@ export default {
         this.total = data.total;
         this.idActive = data._id;
       } else {
+        this.tanggal = null;
         this.namaBarangjasa = null;
         this.deskripsi = null;
         this.harga = null;

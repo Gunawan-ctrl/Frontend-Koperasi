@@ -51,11 +51,5 @@ export default {
       },
     };
   },
-  created() {
-    console.log(this.jumlah);
-  },
-  method() {
-    console.log(this.jumlah);
-  },
 };
 </script>
