@@ -7,7 +7,7 @@ const routes = [
     },
     children: [
       {
-        path: "/dashboard",
+        path: "",
         name: "dashboard",
         component: () => import("pages/UnitKoperasi/IndexPage.vue"),
       },
@@ -78,7 +78,7 @@ const routes = [
   },
 
   {
-    path: "",
+    path: "/",
     component: () => import("layouts/KopiLayout.vue"),
     meta: {
       authAdmin: true,
@@ -134,13 +134,13 @@ const routes = [
   {
     path: "/acces-pengguna",
     name: "accesPengguna",
-    component: () => import("pages/UnitKoperasi/access/MenuAcces.vue"),
+    component: () => import("pages/Access/MenuAcces.vue"),
   },
 
   {
     path: "/login",
     name: "login",
-    component: () => import("pages/UnitKoperasi/access/LoginPage.vue"),
+    component: () => import("pages/Access/LoginPage.vue"),
   },
 
   {

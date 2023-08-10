@@ -59,21 +59,10 @@
 
                 <q-btn
                   @click="openDialog(false, null)"
-                  flat
                   icon="library_add"
-                  text-color="blue-7"
+                  color="blue-7"
+                  label="Tambah Data"
                 >
-                  <q-tooltip> Tambah Data </q-tooltip>
-                </q-btn>
-
-                <q-btn
-                  flat
-                  unelevated
-                  icon="document_scanner"
-                  text-color="blue-7"
-                  @click="exportToCSV()"
-                >
-                  <q-tooltip> Export Data </q-tooltip>
                 </q-btn>
 
                 <q-btn
@@ -115,14 +104,14 @@
                   <q-td key="kuantitas" :props="props">
                     {{ props.row.kuantitas }}
                   </q-td>
-                  <q-td key="satuan" :props="props">
-                    {{ props.row.satuan }}
-                  </q-td>
                   <q-td key="harga" :props="props">
                     Rp {{ props.row.harga }}
                   </q-td>
+                  <q-td key="satuan" :props="props">
+                    {{ props.row.satuan }}
+                  </q-td>
                   <q-td key="total" :props="props">
-                    Rp {{ props.row.harga * props.row.satuan }}
+                    Rp {{ props.row.total }}
                   </q-td>
                   <q-td key="action" :props="props">
                     <div class="justify-center q-gutter-x-xs">
@@ -215,16 +204,16 @@
                   <q-input
                     dense
                     type="number"
-                    v-model="satuan"
+                    v-model="harga"
                     outlined
-                    label="Satuan"
+                    label="Harga"
                   />
                   <q-input
                     dense
                     type="number"
-                    v-model="harga"
+                    v-model="satuan"
                     outlined
-                    label="Harga"
+                    label="Satuan"
                   />
                 </q-card-section>
               </q-card-section>
@@ -266,15 +255,15 @@ const columns = [
     align: "left",
   },
   {
-    name: "satuan",
-    label: "Satuan",
-    field: "satuan",
-    align: "left",
-  },
-  {
     name: "harga",
     label: "Harga",
     field: "harga",
+    align: "left",
+  },
+  {
+    name: "satuan",
+    label: "Satuan",
+    field: "satuan",
     align: "left",
   },
   {
@@ -315,7 +304,6 @@ export default {
       kuantitas: null,
       satuan: null,
       harga: null,
-      total: null,
       idActive: null,
     };
   },
@@ -419,6 +407,11 @@ export default {
             this.getData();
           });
         });
+    },
+  },
+  computed: {
+    total() {
+      return this.harga * this.satuan;
     },
   },
 };

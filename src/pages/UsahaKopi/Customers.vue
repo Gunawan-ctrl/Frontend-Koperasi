@@ -59,21 +59,10 @@
 
                 <q-btn
                   @click="openDialog(false, null)"
-                  flat
                   icon="library_add"
-                  text-color="blue-7"
+                  color="blue-7"
+                  label="Tambah Data"
                 >
-                  <q-tooltip> Tambah Data </q-tooltip>
-                </q-btn>
-
-                <q-btn
-                  flat
-                  unelevated
-                  icon="document_scanner"
-                  text-color="blue-7"
-                  @click="exportToCSV()"
-                >
-                  <q-tooltip> Export Data </q-tooltip>
                 </q-btn>
 
                 <q-btn
@@ -107,7 +96,15 @@
                     {{ props.row.alamat }}
                   </q-td>
                   <q-td key="nomorTelepon" :props="props">
-                    {{ props.row.nomorTelepon }}
+                    <a
+                      :href="'https://api.whatsapp.com/send?phone=' + this.wa"
+                      style="text-decoration: none"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {{ props.row.nomorTelepon }}
+                      <q-tooltip>CHAT WHATSAPP</q-tooltip>
+                    </a>
                   </q-td>
                   <q-td key="email" :props="props">
                     {{ props.row.email }}
@@ -352,6 +349,11 @@ export default {
       this.$axios.get("customer/getAll").then((res) => {
         if (res.data.sukses) {
           this.data = res.data.data;
+          this.data.forEach((data) => {
+            this.noTelpon = data.nomorTelepon;
+            this.wa = this.noTelpon.replace(0, 62);
+            console.log(this.wa);
+          });
         }
       });
     },

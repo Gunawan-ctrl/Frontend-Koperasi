@@ -18,7 +18,7 @@
                   Data Produk
                 </div>
                 <div class="text-caption text-grey" style="font-size: 11px">
-                  berisi semua data produk unit usaha kopi.
+                  jumlah produk usaha kopi.
                 </div>
                 <div class="row items-center">
                   <q-icon name="credit_score" />
@@ -59,21 +59,10 @@
 
                 <q-btn
                   @click="openDialog(false, null)"
-                  flat
                   icon="library_add"
-                  text-color="blue-7"
+                  color="blue-7"
+                  label="Tambah Data"
                 >
-                  <q-tooltip> Tambah Data </q-tooltip>
-                </q-btn>
-
-                <q-btn
-                  flat
-                  unelevated
-                  icon="document_scanner"
-                  text-color="blue-7"
-                  @click="exportToCSV()"
-                >
-                  <q-tooltip> Export Data </q-tooltip>
                 </q-btn>
 
                 <q-btn
@@ -103,17 +92,17 @@
                   <q-td key="namaProduk" :props="props">
                     {{ props.row.namaProduk }}
                   </q-td>
-                  <q-td key="hargaJual" :props="props">
-                    Rp {{ props.row.hargaJual }}
-                  </q-td>
                   <q-td key="hpp" :props="props">
                     {{ props.row.hpp }}
+                  </q-td>
+                  <q-td key="hargaJual" :props="props">
+                    Rp {{ props.row.hargaJual }}
                   </q-td>
                   <q-td key="keuntunganPerProduk" :props="props">
                     Rp {{ props.row.hargaJual - props.row.hpp }}
                   </q-td>
                   <q-td key="stok" :props="props">
-                    Rp {{ props.row.stok }}
+                    {{ props.row.stok }}
                   </q-td>
                   <q-td key="fotoProduk" :props="props">
                     <q-item>
@@ -204,7 +193,7 @@
                     type="number"
                     v-model="form.hpp"
                     outlined
-                    label="Harga Pokok Penjualan"
+                    label="Harga Pokok"
                   />
                   <q-input
                     dense
@@ -271,15 +260,15 @@ const columns = [
     align: "left",
   },
   {
-    name: "hargaJual",
-    label: "Harga Jual",
-    field: "hargaJual",
+    name: "hpp",
+    label: "Harga Pokok",
+    field: "hpp",
     align: "left",
   },
   {
-    name: "hpp",
-    label: "HPP",
-    field: "hpp",
+    name: "hargaJual",
+    label: "Harga Jual",
+    field: "hargaJual",
     align: "left",
   },
   {
@@ -353,21 +342,21 @@ export default {
     openDialog(editMode, data) {
       this.editMode = editMode;
       if (editMode) {
-        this.form.namaProduk = data.form.namaProduk;
-        this.form.hpp = data.form.hpp;
-        this.form.hargaJual = data.form.hargaJual;
-        this.form.keuntunganPerProduk = data.form.keuntunganPerProduk;
-        this.form.stok = data.form.stok;
-        this.form.keterangan = data.form.keterangan;
+        this.namaProduk = data.namaProduk;
+        this.hpp = data.hpp;
+        this.hargaJual = data.hargaJual;
+        this.keuntunganPerProduk = data.keuntunganPerProduk;
+        this.stok = data.stok;
+        this.keterangan = data.keterangan;
         this.fotoProduk = data.fotoProduk;
         this.idActive = data._id;
       } else {
-        this.form.namaProduk = null;
-        this.form.hpp = null;
-        this.form.hargaJual = null;
-        this.form.keuntunganPerProduk = null;
-        this.form.stok = null;
-        this.form.keterangan = null;
+        this.namaProduk = null;
+        this.hpp = null;
+        this.hargaJual = null;
+        this.keuntunganPerProduk = null;
+        this.stok = null;
+        this.keterangan = null;
         this.fotoProduk = null;
         this.idActive = null;
       }
@@ -378,19 +367,25 @@ export default {
       this.dialog = false;
     },
     onReset() {
-      this.form.namaProduk = null;
-      this.form.hpp = null;
-      this.form.hargaJual = null;
-      this.form.keuntunganPerProduk = null;
-      this.form.stok = null;
-      this.form.keterangan = null;
+      this.namaProduk = null;
+      this.hpp = null;
+      this.hargaJual = null;
+      this.keuntunganPerProduk = null;
+      this.stok = null;
+      this.keterangan = null;
       this.fotoProduk = null;
     },
+    edit() {},
     onSubmit() {
       if (this.editMode) {
         this.$axios
           .put(`produk/edit/${this.idActive}`, {
-            form: this.form,
+            namaProduk: this.namaProduk,
+            hargaJual: this.hargaJual,
+            hpp: this.hpp,
+            keuntunganPerProduk: this.keuntunganPerProduk,
+            stok: this.stok,
+            keterangan: this.keterangan,
             fotoProduk: this.fotoProduk,
           })
           .then((res) => {
@@ -440,6 +435,11 @@ export default {
         });
     },
   },
+  // computed: {
+  //   keuntunganPerProduk() {
+  //     return this.hargaJual - this.hpp;
+  //   },
+  // },
 };
 </script>
 

@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <q-page>
+  <q-page class="bg-grey-3">
     <div class="q-pa-md">
       <q-card class="q-pa-md">
         <q-breadcrumbs separator="---" class="text-blue-8" active-color="black">
@@ -69,13 +69,13 @@
                   }}
                 </q-td>
                 <q-td key="namaPeminjam" :props="props">
-                  {{ props.row.namaPeminjam }}
+                  {{ props.row.nasabahSrikandi.nama }}
                 </q-td>
                 <q-td key="keterangan" :props="props">
                   {{ props.row.keterangan }}
                 </q-td>
-                <q-td key="total" :props="props">
-                  Rp {{ props.row.total }}
+                <q-td key="pendapatan" :props="props">
+                  Rp {{ props.row.pendapatan }}
                 </q-td>
                 <q-td key="action" :props="props">
                   <div class="justify-center q-gutter-x-xs">
@@ -210,17 +210,10 @@ const columns = [
     align: "left",
   },
   {
-    name: "total",
-    label: "Total",
-    field: "total",
+    name: "pendapatan",
+    label: "Total Pendapatan",
+    field: "pendapatan",
     align: "left",
-  },
-  {
-    name: "action",
-    label: "Action",
-    field: "action",
-    align: "center",
-    tarik: "25.000",
   },
 ];
 
@@ -245,101 +238,31 @@ export default {
   },
   created() {
     this.getData();
-    this.getNasabah();
   },
   methods: {
-    openDialog(editMode, data) {
-      this.editMode = editMode;
-      if (editMode) {
-        this.tanggal = data.tanggal;
-        this.namaPeminjam = data.namaPeminjam;
-        this.keterangan = data.keterangan;
-        this.total = data.total;
-        this.idActive = data._id;
-      } else {
-        this.tanggal = null;
-        this.namaPeminjam = null;
-        this.keterangan = null;
-        this.total = null;
-        this.idActive = null;
-      }
-      this.dialog = true;
-    },
-    resetDialog() {
-      this.editMode = false;
-      this.dialog = false;
-    },
-    onReset() {
-      this.tanggal = null;
-      this.namaPeminjam = null;
-      this.keterangan = null;
-      this.total = null;
-    },
     onSubmit() {
-      if (this.editMode) {
-        this.$axios
-          .put(`peminjaman/edit/${this.idActive}`, {
-            tanggal: this.tanggal,
-            namaPeminjam: this.namaPeminjam,
-            keterangan: this.keterangan,
-            total: this.total,
-          })
-          .then((res) => {
-            if ((res.data.sukses = true)) {
-              this.$successNotif(res.data.pesan, "positive");
-            }
-            this.getData();
-            this.resetDialog();
-            this.onReset();
-          });
-      } else {
-        this.$axios
-          .post("peminjaman/add", {
-            tanggal: this.tanggal,
-            namaPeminjam: this.namaPeminjam.nama,
-            keterangan: this.keterangan,
-            jumlah: this.jumlah,
-            bunga: this.bunga,
-            total: this.total,
-          })
-          .then((res) => {
-            if ((res.data.sukses = true)) {
-              this.$successNotif(res.data.pesan, "positive");
-            }
-            this.dialog = false;
-            this.getData();
-          });
-      }
-    },
-    getNasabah() {
-      this.$axios.get("nasabah/getAll").then((res) => {
-        if (res.data.sukses) {
-          this.optionPeminjam = res.data.data;
-          console.log(this.optionPeminjam);
-        }
-      });
-    },
-    hapusData(_id) {
-      this.$q
-        .dialog({
-          title: "Konfirmasi",
-          message: "Apakah anda yakin ingin menghapus data ini?",
-          cancel: true,
-          persistent: true,
+      this.$axios
+        .post("peminjaman/add", {
+          tanggal: this.tanggal,
+          namaPeminjam: this.namaPeminjam.nama,
+          keterangan: this.keterangan,
+          jumlah: this.jumlah,
+          bunga: this.bunga,
+          total: this.total,
         })
-        .onOk(() => {
-          this.$axios.delete(`peminjaman/delete/${_id}`).then((res) => {
-            if (res.data.sukses) {
-              this.$successNotif(res.data.pesan, "positive");
-            }
-            this.getData();
-          });
+        .then((res) => {
+          if ((res.data.sukses = true)) {
+            this.$successNotif(res.data.pesan, "positive");
+          }
+          this.dialog = false;
+          this.getData();
         });
     },
     getData() {
       this.$axios.get("peminjaman/getAll").then((res) => {
         if (res.data.sukses) {
           this.rows = res.data.data;
+          console.log(this.rows);
         }
       });
     },

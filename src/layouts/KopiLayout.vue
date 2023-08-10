@@ -35,7 +35,7 @@
 
             <div class="column items-center">
               <q-avatar size="72px">
-                <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+                <img src="~assets/logo_gapari.png" />
               </q-avatar>
 
               <div class="text-subtitle1 q-mt-md q-mb-xs text-weight-bold">
@@ -245,15 +245,15 @@
 
       <q-img
         class="absolute-top"
-        src="~assets/forest.jpg"
+        src="./../../public/images/banner/Kopi-background.png"
         style="height: 150px"
       >
         <div class="absolute-bottom bg-transparent">
           <q-avatar size="56px" class="q-mb-sm">
             <img src="~assets/logo_gapari.png" />
           </q-avatar>
-          <div claSs="text-weight-bold">Administrator</div>
-          <div>@Admin_usahkopi</div>
+          <div claSs="text-black text-h6">Administrator</div>
+          <div class="text-brown-7">@admin_usahaKopi</div>
         </div>
       </q-img>
     </q-drawer>

@@ -10,14 +10,17 @@
 
       <div class="row q-mt-md">
         <div class="row q-gutter-md col-12">
-          <q-card class="my-card col-lg-3 col-md-4 col-sm-7" flat bordered>
+          <q-card class="col-md-4 col-xs-12" flat bordered>
             <q-card-section horizontal>
+              <q-card-section class="col-4 flex flex-center">
+                <lottie :options="defaultOptions" />
+              </q-card-section>
               <q-card-section class="q-pt-xs">
                 <div class="text-h6 q-mt-sm" style="font-size: 14px">
                   Data Pengeluaran
                 </div>
                 <div class="text-caption text-grey" style="font-size: 11px">
-                  berisi semua data pengeluaran unit usaha kopi.
+                  jumlah pengeluaran usaha kopi.
                 </div>
                 <div class="row items-center">
                   <q-icon name="credit_score" />
@@ -58,21 +61,10 @@
 
                 <q-btn
                   @click="openDialog(false, null)"
-                  flat
                   icon="library_add"
-                  text-color="blue-7"
+                  color="blue-7"
+                  label="Tambah Data"
                 >
-                  <q-tooltip> Tambah Data </q-tooltip>
-                </q-btn>
-
-                <q-btn
-                  flat
-                  unelevated
-                  icon="document_scanner"
-                  text-color="blue-7"
-                  @click="exportToCSV()"
-                >
-                  <q-tooltip> Export Data </q-tooltip>
                 </q-btn>
 
                 <q-btn
@@ -121,7 +113,7 @@
                     {{ props.row.jumlah }}
                   </q-td>
                   <q-td key="total" :props="props">
-                    Rp {{ props.row.harga * props.row.jumlah }}
+                    Rp {{ props.row.total }}
                   </q-td>
                   <q-td key="action" :props="props">
                     <div class="justify-center q-gutter-x-xs">
@@ -246,6 +238,8 @@
 
 <script>
 import Vue3autocounter from "vue3-autocounter";
+import Lottie from "./../../components/Lottie.vue";
+import * as animationData from "./../../../public/images/lottie/pengeluaran.json";
 
 const columns = [
   {
@@ -298,9 +292,12 @@ export default {
   name: "PengeluaranPage",
   components: {
     "vue3-autocounter": Vue3autocounter,
+    Lottie: Lottie,
   },
   data() {
     return {
+      defaultOptions: { animationData: animationData.default },
+      animationSpeed: 2,
       columns,
       data,
       filter: "",
@@ -316,7 +313,7 @@ export default {
       deskripsi: null,
       harga: null,
       jumlah: null,
-      total: null,
+      // total: null,
       idActive: null,
     };
   },
@@ -418,6 +415,11 @@ export default {
             this.getData();
           });
         });
+    },
+  },
+  computed: {
+    total() {
+      return this.harga * this.jumlah;
     },
   },
 };

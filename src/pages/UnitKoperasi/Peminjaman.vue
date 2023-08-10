@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page class="bg-grey-3">
     <div class="q-pa-md">
       <q-card class="q-pa-md">
         <q-breadcrumbs separator="---" class="text-blue-8" active-color="black">
@@ -77,7 +77,7 @@
                   }}
                 </q-td>
                 <q-td key="namaPeminjam" :props="props">
-                  {{ props.row.namaPeminjam }}
+                  {{ props.row.nasabahSrikandi.nama }}
                 </q-td>
                 <q-td key="keterangan" :props="props">
                   {{ props.row.keterangan }}
@@ -89,11 +89,7 @@
                   {{ props.row.bunga }} %
                 </q-td>
                 <q-td key="total" :props="props">
-                  Rp
-                  {{
-                    (props.row.jumlah * props.row.bunga) / 100 +
-                    props.row.jumlah
-                  }}
+                  {{ props.row.total }}
                 </q-td>
                 <q-td key="action" :props="props">
                   <div class="justify-center q-gutter-x-xs">
@@ -271,6 +267,7 @@ const columns = [
 const rows = [];
 export default {
   name: "PeminjamanPage",
+
   data() {
     return {
       columns,
@@ -281,13 +278,17 @@ export default {
       },
       visibles: false,
       dialog: false,
+      jumlahPinjaman: null,
       tanggal: null,
       optionPeminjam: [],
       namaPeminjam: null,
       keterangan: null,
       jumlah: null,
       bunga: null,
-      total: null,
+      idNasabah: null,
+      statusPinjam: 1,
+      // total: null,
+      // total: (this.jumlah * this.bunga) / 100 + this.jumlah,
     };
   },
   created() {
@@ -295,10 +296,6 @@ export default {
     this.getPeminjam();
   },
   methods: {
-    // totalPeminjaman() {
-    //   const jumlah = this.jumlah;
-    //   const bunga = this.bunga;
-    // },
     openDialog(editMode, data) {
       this.editMode = editMode;
       if (editMode) {
@@ -308,6 +305,7 @@ export default {
         this.jumlah = data.jumlah;
         this.bunga = data.bunga;
         this.total = data.total;
+        // this.idNasabah = data.idNasabah;
         this.idActive = data._id;
       } else {
         this.tanggal = null;
@@ -316,6 +314,7 @@ export default {
         this.jumlah = null;
         this.bunga = null;
         this.total = null;
+        // this.idNasabah = null;
         this.idActive = null;
       }
       this.dialog = true;
@@ -331,6 +330,7 @@ export default {
       this.jumlah = null;
       this.bunga = null;
       this.total = null;
+      // this.idNasabah = null;
     },
     onSubmit() {
       if (this.editMode) {
@@ -342,6 +342,7 @@ export default {
             jumlah: this.jumlah,
             bunga: this.bunga,
             total: this.total,
+            // idNasabah: this.namaPeminjam._id,
           })
           .then((res) => {
             if ((res.data.sukses = true)) {
@@ -352,29 +353,30 @@ export default {
             this.onReset();
           });
       } else {
-        this.$axios
-          .post("peminjaman/add", {
-            tanggal: this.tanggal,
-            namaPeminjam: this.namaPeminjam.nama,
-            keterangan: this.keterangan,
-            jumlah: this.jumlah,
-            bunga: this.bunga,
-            total: this.total,
-          })
-          .then((res) => {
-            if ((res.data.sukses = true)) {
-              console.log(this.namaPeminjam);
-              this.$successNotif(res.data.pesan, "positive");
-            }
-            this.dialog = false;
-            this.getData();
-          });
+        const payload = {
+          tanggal: this.tanggal,
+          keterangan: this.keterangan,
+          jumlah: this.jumlah,
+          bunga: this.bunga,
+          total: this.total,
+          pendapatan: this.pendapatan,
+          idNasabah: this.namaPeminjam._id,
+        };
+        console.log(payload);
+        this.$axios.post("peminjaman/add", payload).then((res) => {
+          if ((res.data.sukses = true)) {
+            this.$successNotif(res.data.pesan, "positive");
+          }
+          this.dialog = false;
+          this.getData();
+        });
       }
     },
     getData() {
       this.$axios.get("peminjaman/getAll").then((res) => {
         if (res.data.sukses) {
           this.rows = res.data.data;
+          console.log(this.rows);
         }
       });
     },
@@ -401,6 +403,17 @@ export default {
             this.getData();
           });
         });
+    },
+  },
+  computed: {
+    total() {
+      return (
+        (parseInt(this.jumlah) * parseInt(this.bunga)) / 100 +
+        parseInt(this.jumlah)
+      );
+    },
+    pendapatan() {
+      return (this.jumlah * this.bunga) / 100;
     },
   },
 };

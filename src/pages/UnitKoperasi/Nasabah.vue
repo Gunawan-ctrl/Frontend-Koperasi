@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <q-page>
+  <q-page class="bg-grey-3">
     <div class="q-pa-md">
       <q-card class="q-pa-md">
         <q-breadcrumbs separator="---" class="text-blue-8" active-color="black">
@@ -81,10 +81,30 @@
                   {{ props.row.kelamin }}
                 </q-td>
                 <q-td key="status" :props="props">
-                  {{ props.row.status }}
+                  <q-badge
+                    :color="props.row.status === 'Aktif' ? 'green' : 'red'"
+                    text-color="white"
+                    dense
+                    class="text-weight-bold"
+                    square
+                  >
+                    {{ props.row.status === "Aktif" ? "AKTIF" : "TIDAK AKTIF" }}
+                  </q-badge>
+                </q-td>
+                <q-td key="statusPinjam">
+                  <q-badge
+                    :color="this.total === null ? 'green' : 'red'"
+                    text-color="white"
+                    dense
+                    class="text-weight-bold"
+                    square
+                  >
+                    {{
+                      this.total === null ? "TIDAK MEMINJAM" : "SEDANG MEMINJAM"
+                    }}
+                  </q-badge>
                 </q-td>
                 <q-td key="jumlahPinjaman" :props="props">
-                  <!-- Rp. {{ props.row.jumlahPinjaman }} -->
                   Rp. {{ this.total }}
                 </q-td>
                 <q-td key="action" :props="props">
@@ -180,13 +200,6 @@
                 :options="optionStatus"
                 label="Status"
               />
-              <q-input
-                type="number"
-                dense
-                v-model="jumlahPinjaman"
-                outlined
-                label="Jumlah Pinjaman"
-              />
             </q-card-section>
           </q-card-section>
 
@@ -237,6 +250,12 @@ const columns = [
     align: "left",
   },
   {
+    name: "statusPinjam",
+    label: "Status Peminjaman",
+    field: "statusPinjam",
+    align: "left",
+  },
+  {
     name: "jumlahPinjaman",
     label: "Jumlah Pinjaman",
     field: "jumlahPinjaman",
@@ -270,12 +289,15 @@ export default {
       kelamin: null,
       optionKelamin: ["Laki-Laki", "Perempuan"],
       status: null,
+      statusPinjam: 0,
+      // statusPeminjaman: "meminjam",
       optionStatus: ["Aktif", "Tidak Aktif"],
       jumlahPinjaman: null,
     };
   },
   created() {
     this.getData();
+    this.getStatusAktif();
     this.getPeminjaman();
   },
   methods: {
@@ -287,6 +309,7 @@ export default {
         this.alamat = data.alamat;
         this.kelamin = data.kelamin;
         this.status = data.status;
+        this.statusPinjam = data.statusPinjam;
         this.jumlahPinjaman = data.jumlahPinjaman;
         this.idActive = data._id;
       } else {
@@ -295,6 +318,7 @@ export default {
         this.alamat = null;
         this.kelamin = null;
         this.status = null;
+        this.statusPinjam = 0;
         this.jumlahPinjaman = null;
         this.idActive = null;
       }
@@ -310,6 +334,7 @@ export default {
       this.alamat = null;
       this.kelamin = null;
       this.status = null;
+      this.statusPinjam = 0;
       this.jumlahPinjaman = null;
     },
     onSubmit() {
@@ -321,10 +346,11 @@ export default {
             alamat: this.alamat,
             kelamin: this.kelamin,
             status: this.status,
+            statusPinjam: this.statusPinjam,
             jumlahPinjaman: this.jumlahPinjaman,
           })
           .then((res) => {
-            console.log(res);
+            // console.log(res);
             if ((res.data.sukses = true)) {
               this.$successNotif(res.data.pesan, "positive");
             }
@@ -340,10 +366,10 @@ export default {
             alamat: this.alamat,
             kelamin: this.kelamin,
             status: this.status,
+            statusPinjam: this.statusPinjam,
             jumlahPinjaman: this.jumlahPinjaman,
           })
           .then((res) => {
-            console.log(res);
             if ((res.data.sukses = true)) {
               this.$successNotif(res.data.pesan, "positive");
             }
@@ -356,7 +382,15 @@ export default {
       this.$axios.get("nasabah/getAll").then((res) => {
         if (res.data.sukses) {
           this.rows = res.data.data;
-          console.log(this.rows);
+          // console.log(this.rows);
+        }
+      });
+    },
+    getStatusAktif() {
+      this.$axios.get("nasabah/getStatusAktif").then((res) => {
+        if (res.data.sukses) {
+          this.aktif = res.data.data;
+          console.log(this.aktif);
         }
       });
     },
@@ -365,10 +399,7 @@ export default {
         if (res.data.sukses) {
           res.data.data.forEach((data) => {
             this.total = data.total;
-            console.log(this.total);
           });
-          // this.totalPeminjaman = res.data.data;
-          // console.log(this.totalPeminjaman);
         }
       });
     },

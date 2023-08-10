@@ -2,7 +2,7 @@
   "name": "frontend-koperasi",
   "version": "0.0.1",
   "description": "Koperasi App",
-  "productName": "Koperasi Apps",
+  "productName": "Srikandi Apps",
   "author": "gunawan <gunawa414@gmail.com>",
   "private": true,
   "scripts": {
@@ -13,12 +13,14 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "axios": "^1.2.1",
+    "chart.js": "^4.3.0",
     "core-js": "^3.6.5",
-    "vue-chartjs": "^5.2.0",
+    "echarts": "^5.4.2",
     "lottie-web": "^5.10.2",
     "pinia": "^2.0.11",
     "quasar": "^2.6.0",
     "vue": "^3.0.0",
+    "vue-chartjs": "^5.2.0",
     "vue-i18n": "^9.0.0",
     "vue-router": "^4.0.0",
     "vue3-autocounter": "^1.0.6"

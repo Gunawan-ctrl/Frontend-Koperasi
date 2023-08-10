@@ -17,7 +17,7 @@
             <div class="row col-xs-12 col-md-6 justify-center">
               <div class="text-center q-mb-lg">
                 <div class="text-h6 q-pt-md text-indigo-10 text-weight-bold">
-                  KOPERASI APPS
+                  SRIKANDI APPS
                 </div>
                 <div class="text-caption text-grey-7">
                   Silahkan masukan email dan password yang terdaftar
@@ -99,8 +99,8 @@
   </q-layout>
 </template>
 <script>
-import Lottie from "../../../components/Lottie.vue";
-import * as animationData from "../../../assets/sign.json";
+import Lottie from "../../components/Lottie.vue";
+import * as animationData from "../../assets/sign.json";
 
 export default {
   name: "LoginPage",
@@ -119,7 +119,7 @@ export default {
     onSubmit() {
       this.$axios
         .post("user/login", {
-          // username: "gunawan",
+          // username: "Gunawan",
           // password: 1234,
           username: this.username,
           password: this.password,
@@ -131,7 +131,10 @@ export default {
             this.$router.push({ name: "accesPengguna" });
             this.$successNotif(res.data.pesan, "positive");
           } else {
-            this.$errorNotif(res.data.pesan, "negative");
+            this.$q.notify({
+              type: "negative",
+              message: res.data.pesan,
+            });
           }
         });
     },

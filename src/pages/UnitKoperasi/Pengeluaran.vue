@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page class="bg-grey-3">
     <div class="q-pa-md">
       <q-card class="q-pa-md">
         <q-breadcrumbs separator="---" class="text-blue-8" active-color="black">
@@ -380,5 +380,10 @@ export default {
         });
     },
   },
+  // computed: {
+  //   total() {
+  //     return this.harga * this.jumlah;
+  //   },
+  // },
 };
 </script>

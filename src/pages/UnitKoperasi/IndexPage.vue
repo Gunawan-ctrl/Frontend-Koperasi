@@ -1,14 +1,14 @@
 <template>
-  <q-page>
+  <q-page class="bg-grey-3">
     <div class="q-pa-md">
       <q-card class="q-pa-md">
         <q-breadcrumbs separator="---" class="text-blue-8" active-color="black">
-          <q-breadcrumbs-el label="Dashboard" icon="home" />
+          <q-breadcrumbs-el label="Dashboard" icon="inbox" />
         </q-breadcrumbs>
       </q-card>
       <div class="row items-center q-col-gutter-md q-pt-md">
         <div class="col-12 col-md-4 col-sm-6 col-xs-12 col-lg-4">
-          <q-card flat style="padding: 33px 0px 24px 0px" class="bg-blue">
+          <q-card flat style="padding: 20px 0px 20px 0px" class="bg-blue">
             <q-item>
               <q-item-section avatar>
                 <q-btn
@@ -21,15 +21,15 @@
 
               <q-item-section>
                 <q-item-label class="text-weight-bold q-mb-sm text-white">
-                  SALDO
+                  PENDAPATAN
                 </q-item-label>
                 <q-item-label caption class="text-white">
-                  Jumlah saldo pada bulan ini
+                  Jumlah pendapatan pada bulan ini
                 </q-item-label>
               </q-item-section>
               <q-item-section>
                 <q-item-label class="text-white">
-                  <strong>Rp. {{ saldo }}</strong>
+                  <strong>Rp. {{ pendapatan }}</strong>
                 </q-item-label>
               </q-item-section>
             </q-item>
@@ -37,7 +37,7 @@
         </div>
 
         <div class="col-md-4 col-sm-6 col-xs-12">
-          <q-card flat style="padding: 33px 0px 24px 0px" class="bg-green">
+          <q-card flat style="padding: 20px 0px 20px 0px" class="bg-green">
             <q-item>
               <q-item-section avatar>
                 <q-btn round color="white" text-color="green" icon="payments" />
@@ -45,15 +45,15 @@
 
               <q-item-section>
                 <q-item-label class="text-weight-bold q-mb-sm text-white">
-                  DEBIT
+                  PEMINJAMAN
                 </q-item-label>
                 <q-item-label caption class="text-white">
-                  Jumlah debit pada bulan ini
+                  Jumlah peminjaman pada bulan ini
                 </q-item-label>
               </q-item-section>
               <q-item-section>
                 <q-item-label class="text-white"
-                  ><strong>Rp. {{ debit }}</strong>
+                  ><strong>Rp. {{ peminjaman }}</strong>
                 </q-item-label>
               </q-item-section>
             </q-item>
@@ -61,7 +61,7 @@
         </div>
 
         <div class="col-md-4 col-sm-12 col-xs-12">
-          <q-card flat style="padding: 33px 0px 24px 0px" class="bg-orange-6">
+          <q-card flat style="padding: 20px 0px 20px 0px" class="bg-orange-6">
             <q-item>
               <q-item-section avatar>
                 <q-btn
@@ -74,15 +74,15 @@
 
               <q-item-section>
                 <q-item-label class="text-weight-bold q-mb-sm text-white">
-                  KREDIT
+                  PENGELUARAN
                 </q-item-label>
                 <q-item-label caption class="text-white">
-                  Jumlah kredit pada bulan ini
+                  Jumlah pengeluaran pada bulan ini
                 </q-item-label>
               </q-item-section>
               <q-item-section>
                 <q-item-label class="text-white"
-                  ><strong>Rp. {{ kredit }}</strong>
+                  ><strong>Rp. {{ pengeluaran }}</strong>
                 </q-item-label>
               </q-item-section>
             </q-item>
@@ -137,16 +137,41 @@ export default defineComponent({
     ChartsDoughnut,
     // "vue3-autocounter": Vue3autocounter,
   },
-  setup() {
+  data() {
     return {
-      saldo: "201.000",
-      debit: "100.000",
-      kredit: "50.000",
+      pendapatan: "100.000",
+      peminjaman: "50.000",
+      pengeluaran: "120.000",
       chartDoughnut: null,
       chartBar: null,
       color: null,
     };
   },
-  methods: {},
+  created() {
+    this.getPendapatan();
+    this.getPeminjaman();
+  },
+  methods: {
+    getPendapatan() {
+      this.$axios.get("peminjaman/getAll").then((res) => {
+        if (res.data.sukses) {
+          res.data.data.forEach((data) => {
+            this.pendapatan = data.pendapatan;
+            console.log(this.pendapatan);
+          });
+        }
+      });
+    },
+    getPeminjaman() {
+      this.$axios.get("peminjaman/getAll").then((res) => {
+        if (res.data.sukses) {
+          res.data.data.forEach((data) => {
+            this.peminjaman = data.total;
+            console.log(this.peminjaman);
+          });
+        }
+      });
+    },
+  },
 });
 </script>
