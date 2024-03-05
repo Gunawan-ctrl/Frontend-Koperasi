@@ -3,6 +3,8 @@
     <q-page-container>
       <q-page class="row items-center justify-center">
         <q-card
+          flat
+          bordered
           v-bind:style="$q.screen.lt.sm ? { width: '100%' } : { width: '75%' }"
         >
           <div class="row q-col-gutter-md items-center">
@@ -119,8 +121,8 @@ export default {
     onSubmit() {
       this.$axios
         .post("user/login", {
-          // username: "Gunawan",
-          // password: 1234,
+          // username: "testing",
+          // password: testing123,
           username: this.username,
           password: this.password,
         })
